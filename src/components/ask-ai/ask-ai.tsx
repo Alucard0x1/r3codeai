@@ -2,14 +2,10 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
 import { MdPreview } from "react-icons/md";
-import AiRulesModal from './AiRulesModal';
-import ContextEngineModal from './ContextEngineModal';
+import ModelSelector from './ModelSelector';
 import {
   HiSparkles,
-  HiCog,
-  HiDocumentText,
-  HiPlay,
-  HiChip
+  HiPlay
 } from "react-icons/hi";
 
 import { defaultHTML } from "./../../../utils/consts";
@@ -34,17 +30,7 @@ function AskAI({
   const [typingProgress, setTypingProgress] = useState(0);
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [selectedModel, setSelectedModel] = useState("gemini-2.0-flash");
-  const [isAiRulesModalOpen, setIsAiRulesModalOpen] = useState(false);
-  const [isContextEngineModalOpen, setIsContextEngineModalOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const toggleAiRulesModal = () => {
-    setIsAiRulesModalOpen(!isAiRulesModalOpen);
-  };
-
-  const toggleContextEngineModal = () => {
-    setIsContextEngineModalOpen(!isContextEngineModalOpen);
-  };
 
   // Smart auto-resize function that considers container size and expands upward
   const handleSmartResize = useCallback(() => {
@@ -137,8 +123,6 @@ function AskAI({
     };
   }, [handleSmartResize]);
 
-
-
   const enhancePrompt = async () => {
     if (isEnhancing || isAiWorking || !prompt.trim()) return;
 
@@ -146,11 +130,12 @@ function AskAI({
     setIsEnhancing(true);
 
     try {
-      console.log("📡 Making fast fetch request to enhance prompt");
+      console.log("📡 Making fast fetch request to enhance prompt with model:", selectedModel);
       const response = await fetch("/api/enhance-prompt", {
         method: "POST",
         body: JSON.stringify({
           prompt: prompt.trim(),
+          model: selectedModel,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -166,6 +151,9 @@ function AskAI({
       if (data.enhancedPrompt && data.enhancedPrompt.trim()) {
         setPrompt(data.enhancedPrompt.trim());
         toast.success("✨ Prompt enhanced successfully!");
+
+        // Log info about image functionality
+        console.log("💡 Image Tip: The AI will now use high-quality Unsplash images automatically!");
       } else {
         toast.error("Failed to enhance prompt. Please try again.");
       }
@@ -187,15 +175,16 @@ function AskAI({
     let contentResponse = "";
     let lastRenderTime = 0;
     let estimatedTotalLength = 3000; // Estimate for progress calculation
+    
     try {
-      console.log("📡 Making fetch request to /api/ask-ai");
+      console.log("📡 Making fetch request to /api/ask-ai with model:", selectedModel);
       const request = await fetch("/api/ask-ai", {
         method: "POST",
         body: JSON.stringify({
           prompt,
+          model: selectedModel,
           ...(html === defaultHTML ? {} : { html }),
           ...(previousPrompt ? { previousPrompt } : {}),
-          selectedModel,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -388,47 +377,11 @@ ${htmlContent}
             {isEnhancing && <div className="ai-spinner-small"></div>}
           </button>
 
-          <div className="ai-model-select-wrapper">
-            <select
-              className="ai-model-select-black"
-              value={selectedModel}
-              onChange={(e) => setSelectedModel(e.target.value)}
-              disabled={isAiWorking}
-              title="Select AI Model"
-            >
-              <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
-              <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
-              <option value="claude-sonnet">Claude Sonnet</option>
-              <option value="mistral-ai">Mistral AI</option>
-              <option value="llama">Llama</option>
-              <option value="ollama">Ollama</option>
-            </select>
-            <div className="ai-model-select-icon">
-              <HiChip size={16} />
-            </div>
-          </div>
-
-          <button
-            type="button"
-            className="ai-tool-btn-text-black"
-            title="Configure AI Rules and Guidelines"
+          <ModelSelector
+            selectedModel={selectedModel}
+            onModelChange={setSelectedModel}
             disabled={isAiWorking}
-            onClick={toggleAiRulesModal}
-          >
-            <HiDocumentText size={14} />
-            <span>AI Rules</span>
-          </button>
-
-          <button
-            type="button"
-            className="ai-tool-btn-text-black"
-            title="Configure Context Engine Settings"
-            disabled={isAiWorking}
-            onClick={toggleContextEngineModal}
-          >
-            <HiCog size={14} />
-            <span>Context Engine</span>
-          </button>
+          />
         </div>
 
         <button
@@ -466,9 +419,6 @@ ${htmlContent}
           </div>
         </div>
       )}
-
-      {isAiRulesModalOpen && <AiRulesModal onClose={toggleAiRulesModal} />}
-      {isContextEngineModalOpen && <ContextEngineModal onClose={toggleContextEngineModal} />}
     </div>
   );
 }

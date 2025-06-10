@@ -1,0 +1,369 @@
+/* Enhanced Model Selector Styles */
+.model-selector {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ai-model-select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #1a1a1a;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.ai-model-select-wrapper:hover {
+  background: #242424;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.ai-model-select-black {
+  background: transparent;
+  border: 2px solid #374151;
+  border-radius: 8px;
+  color: #f3f4f6;
+  padding: 8px 40px 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  appearance: none;
+  min-width: 160px;
+}
+
+.ai-model-select-black:hover {
+  border-color: #6b7280;
+  background: rgba(107, 114, 128, 0.1);
+}
+
+.ai-model-select-black:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.ai-model-select-black:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ai-model-select-icon {
+  position: absolute;
+  right: 32px;
+  pointer-events: none;
+  color: #9ca3af;
+  transition: color 0.2s ease;
+}
+
+.model-info-btn {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.model-info-btn:hover {
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.model-info-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Model Details Tooltip */
+.model-details-tooltip {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  animation: tooltipFadeIn 0.2s ease-out;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.model-details-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.model-provider-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.model-details-header h4 {
+  color: #f3f4f6;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.model-details-header p {
+  color: #9ca3af;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.model-details-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.model-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background: rgba(55, 65, 81, 0.3);
+  border-radius: 8px;
+}
+
+.detail-icon {
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.detail-label {
+  color: #9ca3af;
+  font-size: 12px;
+  font-weight: 500;
+  display: block;
+}
+
+.detail-value {
+  color: #f3f4f6;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.model-features {
+  border-top: 1px solid #374151;
+  padding-top: 12px;
+}
+
+.features-label {
+  color: #9ca3af;
+  font-size: 12px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.features-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.feature-tag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(59, 130, 246, 0.1);
+  color: #60a5fa;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.feature-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.model-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #fbbf24;
+  font-size: 12px;
+  margin-top: 8px;
+  padding: 6px 8px;
+  background: rgba(251, 191, 36, 0.1);
+  border-radius: 6px;
+}
+
+/* Model Switch Feedback */
+.model-switch-feedback {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(31, 41, 55, 0.5);
+  border-radius: 6px;
+  border: 1px solid #374151;
+}
+
+.model-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.model-name {
+  color: #f3f4f6;
+  font-size: 12px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.free-badge {
+  background: #10b981;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .model-details-tooltip {
+    position: fixed;
+    top: 50%;
+    left: 16px;
+    right: 16px;
+    transform: translateY(-50%);
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .model-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ai-model-select-black {
+    min-width: 140px;
+    font-size: 12px;
+  }
+
+  .features-list {
+    gap: 4px;
+  }
+
+  .feature-tag {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+}
+
+/* Dark mode enhancements */
+.model-selector * {
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 transparent;
+}
+
+.model-selector *::-webkit-scrollbar {
+  width: 6px;
+}
+
+.model-selector *::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.model-selector *::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 3px;
+}
+
+.model-selector *::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Animation for model switching */
+.model-selector.switching {
+  animation: modelSwitch 0.3s ease-out;
+}
+
+@keyframes modelSwitch {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Cost indicator colors */
+.detail-value.cost-low {
+  color: #10b981;
+}
+
+.detail-value.cost-medium {
+  color: #f59e0b;
+}
+
+.detail-value.cost-high {
+  color: #ef4444;
+}
+
+/* Provider-specific styling */
+.model-selector[data-provider="google"] .model-indicator {
+  background: #4285f4;
+}
+
+.model-selector[data-provider="anthropic"] .model-indicator {
+  background: #ff6b35;
+}
+
+.model-selector[data-provider="mistral"] .model-indicator {
+  background: #ff6b9d;
+}
+
+.model-selector[data-provider="meta"] .model-indicator {
+  background: #1877f2;
+}
+
+.model-selector[data-provider="ollama"] .model-indicator {
+  background: #2d3748;
+} 

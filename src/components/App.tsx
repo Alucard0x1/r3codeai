@@ -16,7 +16,7 @@ import WPThemeDownload from "./wp-theme-download/wp-theme-download";
 import { defaultHTML } from "./../../utils/consts";
 import AskAI from "./ask-ai/ask-ai";
 import Preview from "./preview/preview";
-import handleError from "../../utils/errorHandler";
+import handleError from "../utils/errorHandler.ts";
 
 function App() {
   const [htmlStorage, , removeHtmlStorage] = useLocalStorage("html_content");
@@ -181,7 +181,7 @@ function App() {
         } catch (error) {
           // Fallback to direct backend URL
           console.log('Proxy failed, trying direct backend URL:', error);
-          const directUrl = `http://localhost:3000${endpoint}`;
+          const directUrl = `http://localhost:3001${endpoint}`;
           return await fetch(directUrl, options);
         }
       };

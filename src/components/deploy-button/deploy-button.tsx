@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { TbRocket } from "react-icons/tb";
 
 import SpaceIcon from "@/assets/space.svg";
-import handleError from "../../../utils/errorHandler";
+import handleError from "../../utils/errorHandler.ts";
 
 const MsgToast = ({ url }: { url: string }) => (
   <div className="w-full flex items-center justify-center gap-3">
