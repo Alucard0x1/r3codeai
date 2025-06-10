@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { TbRocket } from "react-icons/tb";
 
 import SpaceIcon from "@/assets/space.svg";
+import handleError from "../../../utils/errorHandler";
 
 const MsgToast = ({ url }: { url: string }) => (
   <div className="w-full flex items-center justify-center gap-3">
@@ -85,10 +86,11 @@ function DeployButton({
         );
 
       } else {
-        toast.error(response.message);
+        // Assuming response.message contains a user-friendly error from the server
+        handleError(new Error(response.message || "Deployment failed"), response.message || "Deployment failed due to an unknown server error.");
       }
     } catch (err: any) {
-      toast.error(err.message);
+      handleError(err, "An unexpected error occurred during deployment.");
     } finally {
       setLoading(false);
       setOpen(false);
