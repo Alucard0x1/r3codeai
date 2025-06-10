@@ -1,0 +1,96 @@
+{
+  "summary": {
+    "total": 9,
+    "successful": 0,
+    "failed": 9,
+    "success_rate": 0.0
+  },
+  "results": [
+    {
+      "model": "gemini-2.5-pro",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google API key not configured for model: gemini-2.5-pro\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 0.02,
+      "timestamp": "2025-06-11T05:12:15.965564"
+    },
+    {
+      "model": "gemini-2.5-flash",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google API key not configured for model: gemini-2.5-flash\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 0.01,
+      "timestamp": "2025-06-11T05:12:16.997129"
+    },
+    {
+      "model": "gemini-2.0-flash",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google API key not configured for model: gemini-2.0-flash\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 0.01,
+      "timestamp": "2025-06-11T05:12:18.002227"
+    },
+    {
+      "model": "gemini-1.5-pro",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google API key not configured for model: gemini-1.5-pro\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 0.0,
+      "timestamp": "2025-06-11T05:12:19.016234"
+    },
+    {
+      "model": "gemini-1.5-flash",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google API key not configured for model: gemini-1.5-flash\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 0.01,
+      "timestamp": "2025-06-11T05:12:20.029370"
+    },
+    {
+      "model": "gemini-2.5-flash-native-audio",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google API key not configured for model: gemini-2.5-flash-native-audio\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 0.01,
+      "timestamp": "2025-06-11T05:12:21.043349"
+    },
+    {
+      "model": "gemini-2.0-flash-image-gen",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google API key not configured for model: gemini-2.0-flash-image-gen\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 0.0,
+      "timestamp": "2025-06-11T05:12:22.052726"
+    },
+    {
+      "model": "imagen-3",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google API key not configured for model: imagen-3\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 0.0,
+      "timestamp": "2025-06-11T05:12:23.052899"
+    },
+    {
+      "model": "veo-2",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google API key not configured for model: veo-2\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 0.01,
+      "timestamp": "2025-06-11T05:12:24.066133"
+    }
+  ],
+  "by_status": {
+    "error": [
+      "gemini-2.5-pro",
+      "gemini-2.5-flash",
+      "gemini-2.0-flash",
+      "gemini-1.5-pro",
+      "gemini-1.5-flash",
+      "gemini-2.5-flash-native-audio",
+      "gemini-2.0-flash-image-gen",
+      "imagen-3",
+      "veo-2"
+    ]
+  },
+  "timestamp": "2025-06-11T05:12:25.085830"
+}

@@ -1,0 +1,24 @@
+{
+  "summary": {
+    "total": 1,
+    "successful": 0,
+    "failed": 1,
+    "success_rate": 0.0
+  },
+  "results": [
+    {
+      "model": "gemini-2.0-flash",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google API key not configured for model: gemini-2.0-flash\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 0.0,
+      "timestamp": "2025-06-11T05:14:29.356227"
+    }
+  ],
+  "by_status": {
+    "error": [
+      "gemini-2.0-flash"
+    ]
+  },
+  "timestamp": "2025-06-11T05:14:30.363088"
+}

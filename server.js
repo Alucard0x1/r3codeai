@@ -18,7 +18,7 @@ const ipAddresses = new Map();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 const MAX_REQUESTS_PER_IP = 10;
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 // Available models: gemini-2.0-flash, gemini-1.5-flash, gemini-1.5-pro, gemini-1.5-flash-8b
@@ -604,7 +604,7 @@ async function callGoogleGemini(prompt, model) {
   const requestData = {
     contents: [{
       parts: [{
-        text: enhancedPrompt
+        text: fullPrompt
       }]
     }],
     generationConfig: {
@@ -669,7 +669,7 @@ async function callAnthropicClaude(prompt, model) {
     messages: [
       {
         role: "user",
-        content: enhancedPrompt
+        content: fullPrompt
       }
     ]
   };
@@ -718,7 +718,7 @@ async function callMistralAI(prompt, model) {
     messages: [
       {
         role: "user",
-        content: enhancedPrompt
+        content: fullPrompt
       }
     ],
     temperature: 0.7,
@@ -769,7 +769,7 @@ async function callMetaLlama(prompt, model) {
     messages: [
       {
         role: "user",
-        content: enhancedPrompt
+        content: fullPrompt
       }
     ],
     temperature: 0.7,
@@ -817,7 +817,7 @@ async function callOllama(prompt, model) {
       messages: [
         {
           role: "user",
-          content: enhancedPrompt
+          content: fullPrompt
         }
       ],
       stream: false,
@@ -877,7 +877,7 @@ async function callDeepSeekAPI(prompt, model) {
     messages: [
       {
         role: "user",
-        content: enhancedPrompt
+        content: fullPrompt
       }
     ],
     temperature: 0.7,

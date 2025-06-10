@@ -13,7 +13,7 @@ from typing import Dict, List, Optional
 import sys
 
 # Configuration
-SERVER_URL = "http://localhost:3001"
+SERVER_URL = "http://localhost:3000"
 TEST_PROMPT = "Hello! Please respond with a simple greeting and confirm you're working."
 
 # All 25 models from server.js configuration
@@ -120,16 +120,35 @@ class ModelTester:
             result["response_time"] = round(response_time, 2)
             
             if response.status_code == 200:
-                response_data = response.json()
-                if "response" in response_data:
-                    result["status"] = "success"
-                    result["response"] = response_data["response"][:200] + "..." if len(response_data["response"]) > 200 else response_data["response"]
-                    print(f"✅ {model_name}: SUCCESS ({response_time:.2f}s)")
-                    print(f"   Response: {result['response']}")
+                # Handle both JSON and text responses
+                content_type = response.headers.get('content-type', '')
+                if 'application/json' in content_type:
+                    response_data = response.json()
+                    if "response" in response_data:
+                        result["status"] = "success"
+                        result["response"] = response_data["response"][:200] + "..." if len(response_data["response"]) > 200 else response_data["response"]
+                    else:
+                        result["status"] = "error"
+                        result["error"] = "No response field in API response"
+                        print(f"❌ {model_name}: No response field")
+                elif 'text/plain' in content_type:
+                    # Handle streaming text response
+                    text_response = response.text
+                    if text_response and len(text_response.strip()) > 0:
+                        result["status"] = "success"
+                        result["response"] = text_response[:200] + "..." if len(text_response) > 200 else text_response
+                    else:
+                        result["status"] = "error"
+                        result["error"] = "Empty response from API"
+                        print(f"❌ {model_name}: Empty response")
                 else:
                     result["status"] = "error"
-                    result["error"] = "No response field in API response"
-                    print(f"❌ {model_name}: No response field")
+                    result["error"] = f"Unexpected content type: {content_type}"
+                    print(f"❌ {model_name}: Unexpected content type")
+                
+                if result["status"] == "success":
+                    print(f"✅ {model_name}: SUCCESS ({response_time:.2f}s)")
+                    print(f"   Response: {result['response']}")
             else:
                 result["status"] = "error"
                 result["error"] = f"HTTP {response.status_code}: {response.text}"

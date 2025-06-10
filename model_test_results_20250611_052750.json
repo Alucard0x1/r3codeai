@@ -1,0 +1,24 @@
+{
+  "summary": {
+    "total": 1,
+    "successful": 0,
+    "failed": 1,
+    "success_rate": 0.0
+  },
+  "results": [
+    {
+      "model": "gemini-2.0-flash",
+      "status": "connection_error",
+      "response": null,
+      "error": "Expecting value: line 1 column 1 (char 0)",
+      "response_time": 9.72,
+      "timestamp": "2025-06-11T05:27:39.594464"
+    }
+  ],
+  "by_status": {
+    "connection_error": [
+      "gemini-2.0-flash"
+    ]
+  },
+  "timestamp": "2025-06-11T05:27:50.321791"
+}

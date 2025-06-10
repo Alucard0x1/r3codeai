@@ -1,0 +1,98 @@
+{
+  "summary": {
+    "total": 9,
+    "successful": 3,
+    "failed": 6,
+    "success_rate": 33.3
+  },
+  "results": [
+    {
+      "model": "gemini-2.5-pro",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google Gemini API Error: 429 Too Many Requests\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 1.31,
+      "timestamp": "2025-06-11T05:29:00.980659"
+    },
+    {
+      "model": "gemini-2.5-flash",
+      "status": "success",
+      "response": "<!DOCTYPE html><html lang=\"en\"><head>    <meta charset=\"UTF-8\">    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">    <title>Greeting & Confirmation</title>    <style>        :r...",
+      "error": null,
+      "response_time": 11.67,
+      "timestamp": "2025-06-11T05:29:03.300924"
+    },
+    {
+      "model": "gemini-2.0-flash",
+      "status": "success",
+      "response": "```html<!DOCTYPE html><html lang=\"en\"><head>    <meta charset=\"UTF-8\">    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">    <title>Hello World</title>    <style>        :root {...",
+      "error": null,
+      "response_time": 11.93,
+      "timestamp": "2025-06-11T05:29:15.971360"
+    },
+    {
+      "model": "gemini-1.5-pro",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google Gemini API Error: 429 Too Many Requests\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 0.5,
+      "timestamp": "2025-06-11T05:29:28.911017"
+    },
+    {
+      "model": "gemini-1.5-flash",
+      "status": "success",
+      "response": "```html<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Single-File HTML Website</title><style>:root {  --primary...",
+      "error": null,
+      "response_time": 9.07,
+      "timestamp": "2025-06-11T05:29:30.416118"
+    },
+    {
+      "model": "gemini-2.5-flash-native-audio",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google Gemini API Error: 404 Not Found\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 0.29,
+      "timestamp": "2025-06-11T05:29:40.501579"
+    },
+    {
+      "model": "gemini-2.0-flash-image-gen",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google Gemini API Error: 400 Bad Request\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 0.26,
+      "timestamp": "2025-06-11T05:29:41.800902"
+    },
+    {
+      "model": "imagen-3",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google Gemini API Error: 404 Not Found\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 0.25,
+      "timestamp": "2025-06-11T05:29:43.063269"
+    },
+    {
+      "model": "veo-2",
+      "status": "error",
+      "response": null,
+      "error": "HTTP 500: {\"error\":\"Google Gemini API Error: 404 Not Found\",\"suggestion\":\"Please check your API keys and try again\"}",
+      "response_time": 0.25,
+      "timestamp": "2025-06-11T05:29:44.324922"
+    }
+  ],
+  "by_status": {
+    "error": [
+      "gemini-2.5-pro",
+      "gemini-1.5-pro",
+      "gemini-2.5-flash-native-audio",
+      "gemini-2.0-flash-image-gen",
+      "imagen-3",
+      "veo-2"
+    ],
+    "success": [
+      "gemini-2.5-flash",
+      "gemini-2.0-flash",
+      "gemini-1.5-flash"
+    ]
+  },
+  "timestamp": "2025-06-11T05:29:45.589971"
+}

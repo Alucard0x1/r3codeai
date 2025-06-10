@@ -1,0 +1,24 @@
+{
+  "summary": {
+    "total": 1,
+    "successful": 1,
+    "failed": 0,
+    "success_rate": 100.0
+  },
+  "results": [
+    {
+      "model": "gemini-2.0-flash",
+      "status": "success",
+      "response": "```html<!DOCTYPE html><html lang=\"en\"><head>  <meta charset=\"UTF-8\">  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">  <title>Simple Greeting</title>  <style>    :root {      --...",
+      "error": null,
+      "response_time": 10.23,
+      "timestamp": "2025-06-11T05:28:43.465341"
+    }
+  ],
+  "by_status": {
+    "success": [
+      "gemini-2.0-flash"
+    ]
+  },
+  "timestamp": "2025-06-11T05:28:54.694698"
+}
