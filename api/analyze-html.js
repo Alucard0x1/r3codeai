@@ -54,7 +54,7 @@ function analyzeHTMLStructure(html) {
     if (!structure.hasHeader) recommendations.push("Add a header section for better theme structure");
     if (!structure.hasMainContent) recommendations.push("Add a main content area");
     if (!structure.hasFooter) recommendations.push("Add a footer section");
-    if (!structure.hasNavigation) recommendations.push("Add navigation menu for WordPress integration");
+    if (!structure.hasNavigation) recommendations.push("Add navigation menu");
     if (structure.contentSections.length === 0) recommendations.push("Add content sections for better organization");
     
     const suitability = {

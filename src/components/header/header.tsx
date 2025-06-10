@@ -1,20 +1,16 @@
 import { ReactNode, useState } from "react";
 import { TbReload, TbCode, TbPlug } from "react-icons/tb";
-import { FaGithub, FaWordpress } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import McpModal from './McpModal';
 import { HiLightningBolt } from "react-icons/hi";
 
 function Header({
   onReset,
-  onWPConvert,
-  isConverting,
   html,
   defaultHTML,
   children,
 }: {
   onReset: () => void;
-  onWPConvert: () => void;
-  isConverting: boolean;
   html: string;
   defaultHTML: string;
   children?: ReactNode;
@@ -72,25 +68,7 @@ function Header({
             <span>Connect MCP</span>
           </button>
 
-          {/* Convert to WP Theme Button */}
-          <button
-            className={`nav-btn-black d-none d-md-flex align-items-center ${isConverting ? 'converting' : ''}`}
-            onClick={onWPConvert}
-            disabled={isConverting || !html || html === defaultHTML}
-            title="Convert to WordPress Theme"
-          >
-            {isConverting ? (
-              <>
-                <div className="wp-spinner me-2"></div>
-                <span>Converting...</span>
-              </>
-            ) : (
-              <>
-                <FaWordpress className="me-2" size={16} />
-                <span>Convert to WP Theme</span>
-              </>
-            )}
-          </button>
+
 
           {/* Children (Deploy Button) */}
           {children}

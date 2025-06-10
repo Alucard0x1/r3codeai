@@ -11,7 +11,7 @@
 - **AI-Powered Generation**: Uses Google Gemini 2.0 Flash for intelligent web development
 - **Real-time Preview**: See your UI being generated in real-time with streaming responses
 - **Instant Deployment**: Ready-to-deploy single HTML files
-- **WordPress Theme Conversion**: Convert generated HTML to WordPress themes
+
 - **No Authentication Required**: Works out of the box with rate limiting
 
 ## Getting Started
@@ -63,7 +63,7 @@ npm run dev
 1. **Describe UI/UX**: Type your request in the input field (e.g., "Create a modern landing page for a coffee shop")
 2. **Watch Creation**: See the AI generate complete HTML, CSS, and JavaScript in real-time
 3. **Single File Output**: Get a complete website in one HTML file ready for deployment
-4. **Convert to WordPress**: Click "Convert to WP" to transform your HTML into a WordPress theme
+
 5. **Iterate**: Continue asking the AI to improve the UI/UX and functionality
 
 ## Technology Stack
