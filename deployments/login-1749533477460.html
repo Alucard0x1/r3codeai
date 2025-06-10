@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A modern, responsive task management system.">
+    <meta property="og:title" content="Task Management System">
+    <meta property="og:description" content="A modern, responsive task management system.">
+    <meta property="og:image" content="https://source.unsplash.com/random/1200x630">
+    <title>Task Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f3f4f6;
+            color: #334155;
+        }
+
+        .task-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .task-card:hover {
+            transform: scale(1.02);
+        }
+
+        .btn {
+            border-radius: 3px;
+        }
+
+        .hover\:shadow-md:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .drag-over {
+            background-color: #edf2f7;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div id="root" class="container mx-auto py-8 px-4">
+        <!-- Login Section -->
+        <section id="loginSection" class="mb-8 max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Login</h2>
+            <div class="mb-4">
+                <label for="username" class="block text-gray-700 text-sm font-bold mb-2">Username:</label>
+                <input type="text" id="username"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="Enter username">
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+                <input type="password" id="password"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="Enter password">
+            </div>
+            <button id="loginButton"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline btn"
+                type="button">
+                Log In
+            </button>
+            <p id="loginError" class="text-red-500 text-sm mt-2 hidden">Invalid username or password.</p>
+        </section>
+
+        <!-- Main App Section (Initially Hidden) -->
+        <section id="appSection" class="hidden">
+            <header class="flex items-center justify-between mb-6">
+                <h1 class="text-3xl font-bold text-gray-800">Task Management</h1>
+                <div id="userProfile" class="flex items-center space-x-2">
+                    <img id="userAvatar" src="https://randomuser.me/api/portraits/men/1.jpg" alt="User Avatar"
+                        class="w-8 h-8 rounded-full">
+                    <span id="usernameDisplay" class="text-gray-700 font-medium"></span>
+                    <button id="logoutButton"
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline btn">
+                        Logout
+                    </button>
+                </div>
+            </header>
+
+            <!-- Task Creation Form -->
+            <div class="mb-8 max-w-lg mx-auto">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800">Add New Task</h2>
+                <form id="addTaskForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                    <div class="mb-4">
+                        <label for="taskTitle" class="block text-gray-700 text-sm font-bold mb-2">Title:</label>
+                        <input type="text" id="taskTitle"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            placeholder="Enter task title" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="taskDescription" class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
+                        <textarea id="taskDescription"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            placeholder="Enter task description" rows="3"></textarea>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <button
+                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline btn"
+                            type="submit">
+                            Add Task
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Task Lists -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- To Do -->
+                <div class="bg-white rounded-md shadow-md p-4">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">To Do</h3>
+                    <div id="todoList" class="space-y-4 min-h-[50px]" data-status="todo">
+                        <!-- Tasks will be added here -->
+                        <div id="todoEmptyState" class="text-gray-500 text-center py-4 hidden">No tasks yet!</div>
+                        <div id="todoLoading" class="text-center py-4 hidden">
+                            <i class="fas fa-spinner fa-spin"></i> Loading...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- In Progress -->
+                <div class="bg-white rounded-md shadow-md p-4">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">In Progress</h3>
+                    <div id="inProgressList" class="space-y-4 min-h-[50px]" data-status="inProgress">
+                        <!-- Tasks will be added here -->
+                        <div id="inProgressEmptyState" class="text-gray-500 text-center py-4 hidden">No tasks in
+                            progress.</div>
+                        <div id="inProgressLoading" class="text-center py-4 hidden">
+                            <i class="fas fa-spinner fa-spin"></i> Loading...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completed -->
+                <div class="bg-white rounded-md shadow-md p-4">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Completed</h3>
+                    <div id="completedList" class="space-y-4 min-h-[50px]" data-status="completed">
+                        <!-- Tasks will be added here -->
+                        <div id="completedEmptyState" class="text-gray-500 text-center py-4 hidden">No completed
+                            tasks.</div>
+                        <div id="completedLoading" class="text-center py-4 hidden">
+                            <i class="fas fa-spinner fa-spin"></i> Loading...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task Details Modal -->
+            <div id="taskDetailsModal"
+                class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog"
+                aria-modal="true">
+                <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                    <div
+                        class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <div class="sm:flex sm:items-start">
+                                <div
+                                    class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                    <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                </div>
+                                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Task
+                                        Details</h3>
+                                    <div class="mt-2">
+                                        <p class="text-sm text-gray-500">
+                                            <strong class="font-bold">Title:</strong> <span
+                                                id="modalTaskTitle"></span><br>
+                                            <strong class="font-bold">Description:</strong> <span
+                                                id="modalTaskDescription"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                            <button id="closeModalButton" type="button"
+                                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm btn">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const loginSection = document.getElementById('loginSection');
+        const appSection = document.getElementById('appSection');
+        const loginButton = document.getElementById('loginButton');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginError = document.getElementById('loginError');
+        const logoutButton = document.getElementById('logoutButton');
+        const usernameDisplay = document.getElementById('usernameDisplay');
+        const userAvatar = document.getElementById('userAvatar');
+        const addTaskForm = document.getElementById('addTaskForm');
+        const taskTitleInput = document.getElementById('taskTitle');
+        const taskDescriptionInput = document.getElementById('taskDescription');
+        const todoList = document.getElementById('todoList');
+        const inProgressList = document.getElementById('inProgressList');
+        const completedList = document.getElementById('completedList');
+        const todoEmptyState = document.getElementById('todoEmptyState');
+        const inProgressEmptyState = document.getElementById('inProgressEmptyState');
+        const completedEmptyState = document.getElementById('completedEmptyState');
+        const todoLoading = document.getElementById('todoLoading');
+        const inProgressLoading = document.getElementById('inProgressLoading');
+        const completedLoading = document.getElementById('completedLoading');
+        const taskDetailsModal = document.getElementById('taskDetailsModal');
+        const closeModalButton = document.getElementById('closeModalButton');
+        const modalTaskTitle = document.getElementById('modalTaskTitle');
+        const modalTaskDescription = document.getElementById('modalTaskDescription');
+
+        const TASKS_KEY = 'tasks';
+        let tasks = [];
+
+        function showLoading(listId) {
+            document.getElementById(`${listId}Loading`).classList.remove('hidden');
+            document.getElementById(`${listId}EmptyState`).classList.add('hidden');
+        }
+
+        function hideLoading(listId) {
+            document.getElementById(`${listId}Loading`).classList.add('hidden');
+        }
+
+        function showEmptyState(listId) {
+            document.getElementById(`${listId}EmptyState`).classList.remove('hidden');
+        }
+
+        function hideEmptyState(listId) {
+            document.getElementById(`${listId}EmptyState`).classList.add('hidden');
+        }
+
+        function loadTasks() {
+            showLoading('todo');
+            showLoading('inProgress');
+            showLoading('completed');
+
+            setTimeout(() => {
+                try {
+                    const storedTasks = JSON.parse(localStorage.getItem(TASKS_KEY) || '[]');
+                    tasks = storedTasks;
+                    renderTasks();
+                } catch (error) {
+                    console.error("Error loading tasks from local storage:", error);
+                    // Handle error (e.g., display an error message to the user)
+                } finally {
+                    hideLoading('todo');
+                    hideLoading('inProgress');
+                    hideLoading('completed');
+                }
+            }, 500); // Simulate loading delay
+        }
+
+        function saveTasks() {
+            localStorage.setItem(TASKS_KEY, JSON.stringify(tasks));
+        }
+
+        function createTaskElement(task) {
+            const taskCard = document.createElement('div');
+            taskCard.classList.add('task-card', 'p-4', 'mb-4', 'cursor-grab', 'hover:shadow-md');
+            taskCard.draggable = true;
+            taskCard.dataset.taskId = task.id;
+
+            const titleElement = document.createElement('h4');
+            titleElement.classList.add('text-lg', 'font-semibold', 'mb-2', 'text-gray-700');
+            titleElement.textContent = task.title;
+
+            const descriptionElement = document.createElement('p');
+            descriptionElement.classList.add('text-gray-600', 'mb-2');
+            descriptionElement.textContent = task.description;
+
+            const detailsButton = document.createElement('button');
+            detailsButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded', 'focus:outline-none', 'focus:shadow-outline', 'btn', 'mr-2');
+            detailsButton.textContent = 'Details';
+            detailsButton.addEventListener('click', () => showTaskDetails(task));
+
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('bg-red-500', 'hover:bg-red-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded', 'focus:outline-none', 'focus:shadow-outline', 'btn');
+            deleteButton.textContent = 'Delete';
+            deleteButton.addEventListener('click', () => deleteTask(task.id));
+
+            const actionsDiv = document.createElement('div');
+            actionsDiv.classList.add('flex', 'justify-end');
+            actionsDiv.appendChild(detailsButton);
+            actionsDiv.appendChild(deleteButton);
+
+            taskCard.appendChild(titleElement);
+            taskCard.appendChild(descriptionElement);
+            taskCard.appendChild(actionsDiv);
+
+            taskCard.addEventListener('dragstart', dragStart);
+            taskCard.addEventListener('dragend', dragEnd);
+
+            return taskCard;
+        }
+
+        function renderTasks() {
+            todoList.innerHTML = '';
+            inProgressList.innerHTML = '';
+            completedList.innerHTML = '';
+
+            const todoTasks = tasks.filter(task => task.status === 'todo');
+            const inProgressTasks = tasks.filter(task => task.status === 'inProgress');
+            const completedTasks = tasks.filter(task => task.status === 'completed');
+
+            if (todoTasks.length === 0) {
+                showEmptyState('todo');
+            } else {
+                hideEmptyState('todo');
+                todoTasks.forEach(task => {
+                    const taskElement = createTaskElement(task);
+                    todoList.appendChild(taskElement);
+                });
+            }
+
+            if (inProgressTasks.length === 0) {
+                showEmptyState('inProgress');
+            } else {
+                hideEmptyState('inProgress');
+                inProgressTasks.forEach(task => {
+                    const taskElement = createTaskElement(task);
+                    inProgressList.appendChild(taskElement);
+                });
+            }
+
+            if (completedTasks.length === 0) {
+                showEmptyState('completed');
+            } else {
+                hideEmptyState('completed');
+                completedTasks.forEach(task => {
+                    const taskElement = createTaskElement(task);
+                    completedList.appendChild(taskElement);
+                });
+            }
+        }
+
+        function addTask(title, description) {
+            const newTask = {
+                id: Date.now(),
+                title: title,
+                description: description,
+                status: 'todo'
+            };
+            tasks.push(newTask);
+            saveTasks();
+            renderTasks();
+        }
+
+        function deleteTask(taskId) {
+            tasks = tasks.filter(task => task.id !== taskId);
+            saveTasks();
+            renderTasks();
+        }
+
+        function updateTaskStatus(taskId, newStatus) {
+            const taskIndex = tasks.findIndex(task => task.id === taskId);
+            if (taskIndex !== -1) {
+                tasks[taskIndex].status = newStatus;
+                saveTasks();
+                renderTasks();
+            }
+        }
+
+        function showTaskDetails(task) {
+            modalTaskTitle.textContent = task.title;
+            modalTaskDescription.textContent = task.description;
+            taskDetailsModal.classList.remove('hidden');
+        }
+
+        function hideTaskDetails() {
+            taskDetailsModal.classList.add('hidden');
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function dragStart(event) {
+            event.dataTransfer.setData('text/plain', event.target.dataset.taskId);
+            event.target.classList.add('opacity-50'); // Visual feedback during drag
+        }
+
+        function dragEnd(event) {
+            event.target.classList.remove('opacity-50'); // Remove visual feedback after drag
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            const taskId = event.dataTransfer.getData('text/plain');
+            const newStatus = event.target.dataset.status;
+            updateTaskStatus(parseInt(taskId), newStatus);
+        }
+
+        function login(username, password) {
+            // Dummy authentication
+            if (username === 'user' && password === 'password') {
+                loginSection.classList.add('hidden');
+                appSection.classList.remove('hidden');
+                usernameDisplay.textContent = username;
+                loadTasks(); // Load tasks after successful login
+            } else {
+                loginError.classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            appSection.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+            usernameDisplay.textContent = '';
+            tasks = []; // Clear tasks on logout
+            localStorage.removeItem(TASKS_KEY); // Clear tasks from localStorage
+            renderTasks();
+        }
+
+        // Event Listeners
+        loginButton.addEventListener('click', () => {
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+            login(username, password);
+        });
+
+        logoutButton.addEventListener('click', logout);
+
+        addTaskForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const title = taskTitleInput.value;
+            const description = taskDescriptionInput.value;
+            addTask(title, description);
+            taskTitleInput.value = '';
+            taskDescriptionInput.value = '';
+        });
+
+        closeModalButton.addEventListener('click', hideTaskDetails);
+
+        todoList.addEventListener('dragover', allowDrop);
+        inProgressList.addEventListener('dragover', allowDrop);
+        completedList.addEventListener('dragover', allowDrop);
+
+        todoList.addEventListener('drop', drop);
+        inProgressList.addEventListener('drop', drop);
+        completedList.addEventListener('drop', drop);
+
+        // Drag and Drop Visual Feedback
+        const taskLists = [todoList, inProgressList, completedList];
+
+        taskLists.forEach(list => {
+            list.addEventListener('dragenter', function (e) {
+                e.preventDefault(); // Required to allow drop
+                this.classList.add('drag-over');
+                return false;
+            });
+
+            list.addEventListener('dragleave', function () {
+                this.classList.remove('drag-over');
+            });
+        });
+
+    </script>
+<div style="position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px;">
+        Generated with DeepSite AI
+      </div></body>
+
+</html>

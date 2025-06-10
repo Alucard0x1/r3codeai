@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scooter Landing Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS (if needed beyond Tailwind) */
+        .hero-section {
+            background-image: url('https://images.unsplash.com/photo-1609241529198-36d2c9693865?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            height: 70vh; /* Adjust as needed */
+            position: relative; /* Required for the overlay */
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Adjust the overlay color and opacity */
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .gradient-button {
+            background: linear-gradient(to right, #667eea, #764ba2); /* Example gradient */
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gradient-button:hover {
+            opacity: 0.8;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-indigo-600">ScootSmart</a>
+            <nav class="space-x-6">
+                <a href="#" class="text-gray-700 hover:text-indigo-500">Home</a>
+                <a href="#" class="text-gray-700 hover:text-indigo-500">Features</a>
+                <a href="#" class="text-gray-700 hover:text-indigo-500">Models</a>
+                <a href="#" class="text-gray-700 hover:text-indigo-500">Contact</a>
+                <a href="#" class="text-white bg-indigo-600 hover:bg-indigo-700 py-2 px-4 rounded-md transition duration-300">Book a Test Ride</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section relative">
+        <div class="hero-overlay"></div>
+        <div class="container mx-auto px-4 text-white relative z-10 flex flex-col justify-center items-center h-full text-center">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 animate-fade-in-up">Experience the Future of Urban Mobility</h1>
+            <p class="text-lg md:text-xl mb-8 animate-fade-in-up delay-200">Eco-friendly, efficient, and stylish scooters for your daily commute.</p>
+            <button class="gradient-button animate-fade-in-up delay-400">Explore Scooters</button>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-semibold text-center text-gray-800 mb-12">Key Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Feature 1 -->
+                <div class="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition duration-300">
+                    <div class="flex justify-center">
+                      <i class="fa fa-bolt text-4xl text-indigo-600 mb-4"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Electric Power</h3>
+                    <p class="text-gray-600">Enjoy a smooth and silent ride with our powerful electric motors.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition duration-300">
+                   <div class="flex justify-center">
+                       <i class="fa fa-battery-full text-4xl text-green-500 mb-4"></i>
+                   </div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Long-Lasting Battery</h3>
+                    <p class="text-gray-600">Travel further with our extended battery life for longer commutes.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition duration-300">
+                    <div class="flex justify-center">
+                        <i class="fa fa-lock text-4xl text-yellow-500 mb-4"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Advanced Security</h3>
+                    <p class="text-gray-600">Keep your scooter safe with built-in anti-theft features and GPS tracking.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition duration-300">
+                     <div class="flex justify-center">
+                       <i class="fa fa-tachometer-alt text-4xl text-blue-500 mb-4"></i>
+                   </div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Smart Dashboard</h3>
+                    <p class="text-gray-600">Monitor your speed, battery life, and ride stats with our intuitive dashboard.</p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition duration-300">
+                    <div class="flex justify-center">
+                       <i class="fa fa-lightbulb text-4xl text-orange-500 mb-4"></i>
+                   </div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Integrated Lighting</h3>
+                    <p class="text-gray-600">Stay visible and safe with our integrated headlights and taillights.</p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition duration-300">
+                   <div class="flex justify-center">
+                       <i class="fa fa-mobile-alt text-4xl text-purple-500 mb-4"></i>
+                   </div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Mobile App Connectivity</h3>
+                    <p class="text-gray-600">Connect your scooter to our mobile app for enhanced control and monitoring.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Models Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-semibold text-center text-gray-800 mb-12">Our Scooter Models</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Model 1 -->
+                <div class="rounded-lg shadow-md overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1627628126275-33f8a58a354b?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Scooter Model 1" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">City Explorer</h3>
+                        <p class="text-gray-600 mb-4">Perfect for navigating urban environments with ease and style.</p>
+                        <span class="text-indigo-600 font-semibold">$2,499</span>
+                        <button class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md block mt-4 w-full transition duration-300">Learn More</button>
+                    </div>
+                </div>
+
+                <!-- Model 2 -->
+                <div class="rounded-lg shadow-md overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1614036765200-289b657514c1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Scooter Model 2" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">Adventure Rider</h3>
+                        <p class="text-gray-600 mb-4">Built for longer distances and varied terrain, providing a comfortable and powerful ride.</p>
+                        <span class="text-indigo-600 font-semibold">$2,999</span>
+                        <button class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md block mt-4 w-full transition duration-300">Learn More</button>
+                    </div>
+                </div>
+
+                <!-- Model 3 -->
+                <div class="rounded-lg shadow-md overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1614036765186-b45a28e0606b?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Scooter Model 3" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">Eco Cruiser</h3>
+                        <p class="text-gray-600 mb-4">An environmentally friendly option with a focus on energy efficiency and sustainable materials.</p>
+                        <span class="text-indigo-600 font-semibold">$2,799</span>
+                        <button class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md block mt-4 w-full transition duration-300">Learn More</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial Section -->
+    <section class="py-16 bg-gray-100">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-semibold text-center text-gray-800 mb-12">What Our Customers Say</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Testimonial 1 -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center mb-4">
+              <img src="https://via.placeholder.com/48" alt="Customer Avatar" class="rounded-full w-12 h-12 mr-4">
+              <div>
+                <p class="font-semibold text-gray-700">John Doe</p>
+                <p class="text-gray-500 text-sm">City Explorer Owner</p>
+              </div>
+            </div>
+            <p class="text-gray-600">"I love my ScootSmart City Explorer! It's perfect for zipping around town and avoiding traffic. The battery life is amazing, and it's so easy to park."</p>
+          </div>
+
+          <!-- Testimonial 2 -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center mb-4">
+              <img src="https://via.placeholder.com/48" alt="Customer Avatar" class="rounded-full w-12 h-12 mr-4">
+              <div>
+                <p class="font-semibold text-gray-700">Jane Smith</p>
+                <p class="text-gray-500 text-sm">Adventure Rider Owner</p>
+              </div>
+            </div>
+            <p class="text-gray-600">"The Adventure Rider is a game-changer! I can go on long rides with confidence, and it handles different terrains like a champ. Highly recommend!"</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="py-20 bg-indigo-500 text-white text-center">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8">Ready to experience the future of mobility?</h2>
+            <p class="text-lg mb-12">Book a test ride today and discover the freedom and convenience of our electric scooters.</p>
+            <a href="#" class="bg-white text-indigo-600 py-3 px-8 rounded-md text-xl font-semibold hover:bg-indigo-100 transition duration-300">Book a Test Ride</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <p>&copy; 2024 ScootSmart. All rights reserved.</p>
+            <div class="space-x-4">
+                <a href="#" class="hover:text-indigo-300"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="hover:text-indigo-300"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="hover:text-indigo-300"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+<div style="position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px;">
+        Generated with DeepSite AI
+      </div></body>
+</html>
