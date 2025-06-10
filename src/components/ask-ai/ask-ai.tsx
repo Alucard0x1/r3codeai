@@ -2,6 +2,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
 import { MdPreview } from "react-icons/md";
+import AiRulesModal from './AiRulesModal';
+import ContextEngineModal from './ContextEngineModal';
 import {
   HiSparkles,
   HiCog,
@@ -32,7 +34,17 @@ function AskAI({
   const [typingProgress, setTypingProgress] = useState(0);
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [selectedModel, setSelectedModel] = useState("gemini-2.0-flash");
+  const [isAiRulesModalOpen, setIsAiRulesModalOpen] = useState(false);
+  const [isContextEngineModalOpen, setIsContextEngineModalOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const toggleAiRulesModal = () => {
+    setIsAiRulesModalOpen(!isAiRulesModalOpen);
+  };
+
+  const toggleContextEngineModal = () => {
+    setIsContextEngineModalOpen(!isContextEngineModalOpen);
+  };
 
   // Smart auto-resize function that considers container size and expands upward
   const handleSmartResize = useCallback(() => {
@@ -183,6 +195,7 @@ function AskAI({
           prompt,
           ...(html === defaultHTML ? {} : { html }),
           ...(previousPrompt ? { previousPrompt } : {}),
+          selectedModel,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -400,10 +413,7 @@ ${htmlContent}
             className="ai-tool-btn-text-black"
             title="Configure AI Rules and Guidelines"
             disabled={isAiWorking}
-            onClick={() => {
-              console.log("AI Rules clicked");
-              // TODO: Implement AI Rules modal/panel
-            }}
+            onClick={toggleAiRulesModal}
           >
             <HiDocumentText size={14} />
             <span>AI Rules</span>
@@ -414,10 +424,7 @@ ${htmlContent}
             className="ai-tool-btn-text-black"
             title="Configure Context Engine Settings"
             disabled={isAiWorking}
-            onClick={() => {
-              console.log("Context Engine clicked");
-              // TODO: Implement Context Engine modal/panel
-            }}
+            onClick={toggleContextEngineModal}
           >
             <HiCog size={14} />
             <span>Context Engine</span>
@@ -459,6 +466,9 @@ ${htmlContent}
           </div>
         </div>
       )}
+
+      {isAiRulesModalOpen && <AiRulesModal onClose={toggleAiRulesModal} />}
+      {isContextEngineModalOpen && <ContextEngineModal onClose={toggleContextEngineModal} />}
     </div>
   );
 }

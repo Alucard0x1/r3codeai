@@ -1,6 +1,7 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { TbReload, TbCode, TbPlug } from "react-icons/tb";
 import { FaGithub, FaWordpress } from "react-icons/fa";
+import McpModal from './McpModal';
 import { HiLightningBolt } from "react-icons/hi";
 
 function Header({
@@ -18,6 +19,12 @@ function Header({
   defaultHTML: string;
   children?: ReactNode;
 }) {
+  const [isMcpModalOpen, setIsMcpModalOpen] = useState(false);
+
+  const toggleMcpModal = () => {
+    setIsMcpModalOpen(!isMcpModalOpen);
+  };
+
   return (
     <nav className="navbar navbar-expand-lg ids-navbar-modern sticky-top">
       <div className="container-fluid px-3 px-lg-4">
@@ -58,10 +65,7 @@ function Header({
           {/* Connect MCP Button */}
           <button
             className="nav-btn-black d-none d-md-flex align-items-center"
-            onClick={() => {
-              console.log("Connect MCP clicked");
-              // TODO: Implement MCP connection logic
-            }}
+            onClick={toggleMcpModal}
             title="Connect to MCP Server"
           >
             <TbPlug className="me-2" size={16} />
@@ -112,6 +116,7 @@ function Header({
           </div>
         </div>
       </div>
+      {isMcpModalOpen && <McpModal onClose={toggleMcpModal} />}
     </nav>
   );
 }
