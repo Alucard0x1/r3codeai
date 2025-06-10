@@ -11,6 +11,7 @@
 - **AI-Powered Generation**: Uses Google Gemini 2.0 Flash for intelligent web development
 - **Real-time Preview**: See your UI being generated in real-time with streaming responses
 - **Instant Deployment**: Ready-to-deploy single HTML files
+- **WordPress Theme Conversion**: Convert generated HTML to WordPress themes
 - **No Authentication Required**: Works out of the box with rate limiting
 
 ## Getting Started
@@ -24,8 +25,8 @@
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd r3code-ai
+git clone https://github.com/Alucard0x1/r3codeai.git
+cd r3codeai
 ```
 
 2. Install dependencies:
@@ -40,12 +41,16 @@ cp .env.example .env
 GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-4. Start the development server:
+4. Start the development servers:
 ```bash
+# Start backend server (port 3000)
+node server.js
+
+# In another terminal, start frontend dev server (port 5173/5174)
 npm run dev
 ```
 
-5. Open http://localhost:5173 in your browser
+5. Open http://localhost:5173 (or the port shown in terminal) in your browser
 
 ### Getting a Gemini API Key
 
@@ -58,14 +63,15 @@ npm run dev
 1. **Describe UI/UX**: Type your request in the input field (e.g., "Create a modern landing page for a coffee shop")
 2. **Watch Creation**: See the AI generate complete HTML, CSS, and JavaScript in real-time
 3. **Single File Output**: Get a complete website in one HTML file ready for deployment
-4. **Iterate**: Continue asking the AI to improve the UI/UX and functionality
+4. **Convert to WordPress**: Click "Convert to WP" to transform your HTML into a WordPress theme
+5. **Iterate**: Continue asking the AI to improve the UI/UX and functionality
 
 ## Technology Stack
 
-- **Frontend**: React 19, TypeScript, Tailwind CSS
+- **Frontend**: React 19, TypeScript, Tailwind CSS, Vite
 - **Backend**: Node.js, Express
 - **AI**: Google Gemini 2.0 Flash (REST API)
-- **Editor**: Monaco Editor
+- **Editor**: Monaco Editor with live preview
 - **Build Tool**: Vite
 
 ## API Implementation
