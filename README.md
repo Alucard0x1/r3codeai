@@ -38,7 +38,7 @@ npm install
 ```bash
 cp .env.example .env
 # Add your Gemini API key to .env
-GEMINI_API_KEY=your_gemini_api_key_here
+GOOGLE_API_KEY=your_google_gemini_api_key_here
 ```
 
 4. Start the development servers:
