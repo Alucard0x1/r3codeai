@@ -42,19 +42,41 @@ const MODEL_ICONS = {
 };
 
 const MODEL_COLORS = {
+  // Google Gemini Models
   'gemini-2.5-pro': '#4285f4',
   'gemini-2.5-flash': '#0f9d58',
   'gemini-2.0-flash': '#34a853',
   'gemini-1.5-pro': '#ea4335',
+  'gemini-1.5-flash': '#fbbc04',
+  'gemini-2.5-flash-native-audio': '#9aa0a6',
+  'gemini-2.0-flash-image-gen': '#34a853',
+  'imagen-3': '#4285f4',
+  'veo-2': '#ea4335',
+  
+  // Anthropic Claude Models
   'claude-4-opus': '#ff6b35',
   'claude-4-sonnet': '#ff8c42',
   'claude-3.7-sonnet': '#ffa366',
   'claude-3.5-sonnet': '#ffb399',
+  'claude-3.5-haiku': '#ffcc99',
+  'claude-3-opus': '#ff5722',
+  
+  // Mistral AI Models
+  'magistral-medium': '#ff4081',
+  'mistral-medium': '#ff6b9d',
+  'mistral-large': '#ff8bb3',
+  'pixtral-large': '#ffadd6',
+  'codestral': '#e91e63',
+  'mistral-ocr': '#f06292',
+  
+  // DeepSeek Models
   'deepseek-r1': '#ff4444',
   'deepseek-v3': '#ff6666',
-  'mistral-large': '#ff6b9d',
-  'mistral-small': '#ff8bb3',
+  
+  // Meta Llama Models
   'llama-3.3': '#1877f2',
+  
+  // Local Models
   'ollama': '#2d3748'
 };
 
@@ -68,11 +90,12 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Default models configuration (fallback)
+  // Default models configuration (fallback) - Updated with latest 2025 API names
   const defaultModels: ModelConfig[] = [
+    // Google Gemini Models (Latest 2025)
     {
       id: 'gemini-2.5-pro',
-      name: 'Gemini 2.5 Pro',
+      name: 'Gemini 2.5 Pro Preview',
       provider: 'google',
       description: 'Google\'s most advanced reasoning model with Deep Think capabilities',
       features: ['text', 'multimodal', 'reasoning', 'thinking', 'code', 'large-context'],
@@ -82,7 +105,7 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
     },
     {
       id: 'gemini-2.5-flash',
-      name: 'Gemini 2.5 Flash',
+      name: 'Gemini 2.5 Flash Preview',
       provider: 'google',
       description: 'Google\'s first hybrid reasoning model with adjustable thinking budgets',
       features: ['text', 'multimodal', 'reasoning', 'thinking', 'code', 'fast'],
@@ -100,6 +123,28 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
       cost: { input: 0.075, output: 0.30, free: false },
       available: 'API key required'
     },
+    {
+      id: 'gemini-1.5-pro',
+      name: 'Gemini 1.5 Pro',
+      provider: 'google',
+      description: 'Complex reasoning tasks requiring more intelligence',
+      features: ['text', 'multimodal', 'reasoning', 'large-context'],
+      contextLength: 2000000,
+      cost: { input: 1.25, output: 5.00, free: false },
+      available: 'API key required'
+    },
+    {
+      id: 'gemini-1.5-flash',
+      name: 'Gemini 1.5 Flash',
+      provider: 'google',
+      description: 'Fast and versatile performance across a diverse variety of tasks',
+      features: ['text', 'multimodal', 'code', 'fast'],
+      contextLength: 1000000,
+      cost: { input: 0.075, output: 0.30, free: false },
+      available: 'API key required'
+    },
+    
+    // Anthropic Claude Models (Latest 2025)
     {
       id: 'claude-4-opus',
       name: 'Claude 4 Opus',
@@ -124,12 +169,76 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
       id: 'claude-3.7-sonnet',
       name: 'Claude 3.7 Sonnet',
       provider: 'anthropic',
-      description: 'Anthropic\'s high-performance model with early extended thinking',
+      description: 'High intelligence with toggleable extended thinking',
       features: ['text', 'reasoning', 'code', 'analysis', 'vision', 'extended-thinking'],
       contextLength: 200000,
       cost: { input: 3.00, output: 15.00, free: false },
       available: 'API key required'
     },
+    {
+      id: 'claude-3.5-haiku',
+      name: 'Claude 3.5 Haiku',
+      provider: 'anthropic',
+      description: 'Fastest model, intelligence at blazing speeds',
+      features: ['text', 'reasoning', 'code', 'analysis', 'vision', 'fast'],
+      contextLength: 200000,
+      cost: { input: 0.25, output: 1.25, free: false },
+      available: 'API key required'
+    },
+    
+    // Mistral AI Models (Latest 2025)
+    {
+      id: 'magistral-medium',
+      name: 'Magistral Medium',
+      provider: 'mistral',
+      description: 'Frontier-class reasoning model',
+      features: ['text', 'reasoning', 'frontier-class'],
+      contextLength: 40000,
+      cost: { input: 2.50, output: 7.50, free: false },
+      available: 'API key required'
+    },
+    {
+      id: 'mistral-medium',
+      name: 'Mistral Medium',
+      provider: 'mistral',
+      description: 'Frontier-class multimodal model',
+      features: ['text', 'multimodal', 'frontier-class'],
+      contextLength: 128000,
+      cost: { input: 2.00, output: 6.00, free: false },
+      available: 'API key required'
+    },
+    {
+      id: 'mistral-large',
+      name: 'Mistral Large',
+      provider: 'mistral',
+      description: 'Top-tier reasoning model for high-complexity tasks',
+      features: ['text', 'multilingual', 'reasoning', 'code'],
+      contextLength: 128000,
+      cost: { input: 2.00, output: 6.00, free: false },
+      available: 'API key required'
+    },
+    {
+      id: 'pixtral-large',
+      name: 'Pixtral Large',
+      provider: 'mistral',
+      description: 'Frontier-class multimodal model',
+      features: ['text', 'multimodal', 'frontier-class'],
+      contextLength: 128000,
+      cost: { input: 2.00, output: 6.00, free: false },
+      available: 'API key required'
+    },
+    {
+      id: 'codestral',
+      name: 'Codestral',
+      provider: 'mistral',
+      description: 'Cutting-edge language model for coding',
+      features: ['text', 'code', 'programming'],
+      contextLength: 256000,
+      cost: { input: 1.00, output: 3.00, free: false },
+      available: 'API key required'
+    },
+    
+    // DeepSeek Models
     {
       id: 'deepseek-r1',
       name: 'DeepSeek R1',
@@ -150,16 +259,8 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
       cost: { input: 0.27, output: 1.10, free: false },
       available: 'API key required'
     },
-    {
-      id: 'mistral-large',
-      name: 'Mistral Large',
-      provider: 'mistral',
-      description: 'Mistral\'s flagship model for complex tasks',
-      features: ['text', 'multilingual', 'reasoning', 'code'],
-      contextLength: 128000,
-      cost: { input: 2.00, output: 6.00, free: false },
-      available: 'API key required'
-    },
+    
+    // Meta Llama Models
     {
       id: 'llama-3.3',
       name: 'Llama 3.3',
@@ -170,6 +271,8 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
       cost: { input: 0.59, output: 0.79, free: false },
       available: 'API key required'
     },
+    
+    // Local Ollama
     {
       id: 'ollama',
       name: 'Ollama',

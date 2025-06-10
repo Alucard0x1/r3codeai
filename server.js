@@ -179,14 +179,69 @@ const AI_MODELS_CONFIG = {
   },
   'gemini-1.5-pro': {
     provider: 'google',
-    model: 'gemini-1.5-pro-latest',
-    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent',
+    model: 'gemini-1.5-pro',
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent',
     apiKey: process.env.GOOGLE_API_KEY,
     inputCost: 1.25,
     outputCost: 5.00,
     contextLength: 2000000, // 2M tokens
     features: ['text', 'multimodal', 'reasoning', 'large-context'],
     description: 'Google\'s most capable model with 2M context'
+  },
+  'gemini-1.5-flash': {
+    provider: 'google',
+    model: 'gemini-1.5-flash',
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
+    apiKey: process.env.GOOGLE_API_KEY,
+    inputCost: 0.075,
+    outputCost: 0.30,
+    contextLength: 1000000,
+    features: ['text', 'multimodal', 'code', 'fast'],
+    description: 'Fast and versatile performance across a diverse variety of tasks'
+  },
+  'gemini-2.5-flash-native-audio': {
+    provider: 'google',
+    model: 'gemini-2.5-flash-preview-native-audio-dialog',
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-native-audio-dialog:generateContent',
+    apiKey: process.env.GOOGLE_API_KEY,
+    inputCost: 0.15,
+    outputCost: 0.60,
+    contextLength: 1048576,
+    features: ['text', 'audio', 'video', 'native-audio-output'],
+    description: 'High quality, natural conversational audio outputs'
+  },
+  'gemini-2.0-flash-image-gen': {
+    provider: 'google',
+    model: 'gemini-2.0-flash-preview-image-generation',
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent',
+    apiKey: process.env.GOOGLE_API_KEY,
+    inputCost: 0.075,
+    outputCost: 0.30,
+    contextLength: 1000000,
+    features: ['text', 'multimodal', 'image-generation'],
+    description: 'Conversational image generation and editing'
+  },
+  'imagen-3': {
+    provider: 'google',
+    model: 'imagen-3.0-generate-002',
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:generateContent',
+    apiKey: process.env.GOOGLE_API_KEY,
+    inputCost: 0.20,
+    outputCost: 0.80,
+    contextLength: 8000,
+    features: ['text-to-image', 'image-generation'],
+    description: 'Most advanced image generation model'
+  },
+  'veo-2': {
+    provider: 'google',
+    model: 'veo-2.0-generate-001',
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/veo-2.0-generate-001:generateContent',
+    apiKey: process.env.GOOGLE_API_KEY,
+    inputCost: 0.50,
+    outputCost: 2.00,
+    contextLength: 8000,
+    features: ['text-to-video', 'video-generation'],
+    description: 'High quality video generation'
   },
 
   // Anthropic Claude Models - Updated to latest 2025 versions
@@ -234,6 +289,28 @@ const AI_MODELS_CONFIG = {
     features: ['text', 'reasoning', 'code', 'analysis', 'vision'],
     description: 'Anthropic\'s balanced model for complex reasoning (legacy)'
   },
+  'claude-3.5-haiku': {
+    provider: 'anthropic',
+    model: 'claude-3-5-haiku-20241022',
+    endpoint: 'https://api.anthropic.com/v1/messages',
+    apiKey: process.env.ANTHROPIC_API_KEY,
+    inputCost: 0.25,
+    outputCost: 1.25,
+    contextLength: 200000,
+    features: ['text', 'reasoning', 'code', 'analysis', 'vision', 'fast'],
+    description: 'Fastest model, intelligence at blazing speeds'
+  },
+  'claude-3-opus': {
+    provider: 'anthropic',
+    model: 'claude-3-opus-20240229',
+    endpoint: 'https://api.anthropic.com/v1/messages',
+    apiKey: process.env.ANTHROPIC_API_KEY,
+    inputCost: 15.00,
+    outputCost: 75.00,
+    contextLength: 200000,
+    features: ['text', 'reasoning', 'code', 'analysis', 'vision'],
+    description: 'Powerful model for complex tasks'
+  },
 
   // DeepSeek Models - Updated to latest 2025 versions
   'deepseek-r1': {
@@ -259,28 +336,72 @@ const AI_MODELS_CONFIG = {
     description: 'DeepSeek\'s general-purpose model with excellent performance'
   },
 
-  // Mistral AI Models - Updated to latest 2025 versions
+  // Mistral AI Models - Updated to latest 2025 versions (from documentation)
+  'magistral-medium': {
+    provider: 'mistral',
+    model: 'magistral-medium-2506',
+    endpoint: 'https://api.mistral.ai/v1/chat/completions',
+    apiKey: process.env.MISTRAL_API_KEY,
+    inputCost: 2.50, // Estimated based on tier
+    outputCost: 7.50,
+    contextLength: 40000,
+    features: ['text', 'reasoning', 'frontier-class'],
+    description: 'Frontier-class reasoning model'
+  },
+  'mistral-medium': {
+    provider: 'mistral',
+    model: 'mistral-medium-2505',
+    endpoint: 'https://api.mistral.ai/v1/chat/completions',
+    apiKey: process.env.MISTRAL_API_KEY,
+    inputCost: 2.00,
+    outputCost: 6.00,
+    contextLength: 128000,
+    features: ['text', 'multimodal', 'frontier-class'],
+    description: 'Frontier-class multimodal model'
+  },
   'mistral-large': {
     provider: 'mistral',
-    model: 'mistral-large-latest',
+    model: 'mistral-large-2411',
     endpoint: 'https://api.mistral.ai/v1/chat/completions',
     apiKey: process.env.MISTRAL_API_KEY,
     inputCost: 2.00,
     outputCost: 6.00,
     contextLength: 128000,
     features: ['text', 'multilingual', 'reasoning', 'code'],
-    description: 'Mistral\'s flagship model for complex tasks'
+    description: 'Top-tier reasoning model for high-complexity tasks'
   },
-  'mistral-small': {
+  'pixtral-large': {
     provider: 'mistral',
-    model: 'mistral-small-latest',
+    model: 'pixtral-large-2411',
     endpoint: 'https://api.mistral.ai/v1/chat/completions',
     apiKey: process.env.MISTRAL_API_KEY,
-    inputCost: 0.20, // per 1M tokens
-    outputCost: 0.60,
+    inputCost: 2.00,
+    outputCost: 6.00,
     contextLength: 128000,
-    features: ['text', 'multilingual', 'efficient', 'fast'],
-    description: 'Mistral\'s efficient model for everyday tasks'
+    features: ['text', 'multimodal', 'frontier-class'],
+    description: 'Frontier-class multimodal model'
+  },
+  'codestral': {
+    provider: 'mistral',
+    model: 'codestral-2501',
+    endpoint: 'https://api.mistral.ai/v1/chat/completions',
+    apiKey: process.env.MISTRAL_API_KEY,
+    inputCost: 1.00,
+    outputCost: 3.00,
+    contextLength: 256000,
+    features: ['text', 'code', 'programming'],
+    description: 'Cutting-edge language model for coding'
+  },
+  'mistral-ocr': {
+    provider: 'mistral',
+    model: 'mistral-ocr-2505',
+    endpoint: 'https://api.mistral.ai/v1/chat/completions',
+    apiKey: process.env.MISTRAL_API_KEY,
+    inputCost: 1.50,
+    outputCost: 4.50,
+    contextLength: 128000,
+    features: ['text', 'ocr', 'document-understanding'],
+    description: 'OCR service for extracting interleaved text and images'
   },
 
   // Meta Llama Models - Updated to latest 2025 versions
@@ -974,7 +1095,7 @@ app.get('/api/models', async (req, res) => {
 // Update the ask-ai endpoint with streaming support
 app.post('/api/ask-ai', async (req, res) => {
   try {
-    const { prompt, model = 'gemini-2.0-flash', html, previousPrompt } = req.body;
+    const { prompt, model = 'gemini-2.5-flash', html, previousPrompt } = req.body;
 
     if (!prompt) {
       return res.status(400).json({ error: 'Prompt is required' });

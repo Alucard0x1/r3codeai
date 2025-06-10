@@ -29,7 +29,7 @@ function AskAI({
   const [previousPrompt, setPreviousPrompt] = useState("");
   const [typingProgress, setTypingProgress] = useState(0);
   const [isEnhancing, setIsEnhancing] = useState(false);
-  const [selectedModel, setSelectedModel] = useState("gemini-2.0-flash");
+  const [selectedModel, setSelectedModel] = useState("gemini-2.5-flash");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Smart auto-resize function that considers container size and expands upward
