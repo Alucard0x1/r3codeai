@@ -29,6 +29,118 @@ const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/
 const UNSPLASH_ACCESS_KEY = "KAy5cCiDshDY26vY7-JhoSC6X_YAkaWFD8LdzYF81wc";
 const UNSPLASH_API_URL = "https://api.unsplash.com";
 
+// Default HTML template
+const defaultHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>R3Code AI - Create Best UI/UX in Single HTML File</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <style>
+        :root {
+            --bg-color: #0A0A0A;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --card-color: #141414;
+            --text-color: #EAEAEA;
+            --subtle-text-color: #888888;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 4rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .main-content {
+            text-align: center;
+            width: 100%;
+            animation: fadeIn 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1.5px;
+        }
+        .description {
+            font-size: 1.1rem;
+            color: var(--subtle-text-color);
+            margin-bottom: 4rem;
+            font-weight: 400;
+            line-height: 1.7;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-content">
+            <h2 class="title">Create. Design. Deploy.</h2>
+            <p class="description">
+                Create the best possible UI/UX in a single HTML file. Generate clean, elegant websites with AI assistance.
+                Complete HTML, CSS, and JavaScript in one file ready for instant deployment.
+            </p>
+        </div>
+    </div>
+</body>
+</html>`;
+
+// System prompt function
+function getSystemPrompt() {
+  return `You are an expert web developer and UI/UX designer specializing in creating exceptional single-file HTML websites. Your task is to generate complete, production-ready HTML files that include embedded CSS and JavaScript.
+
+## CORE REQUIREMENTS:
+- Generate ONLY complete HTML code (no markdown, no explanations)
+- Include all CSS in <style> tags within <head>
+- Include all JavaScript in <script> tags before closing </body>
+- Use semantic HTML5 elements for accessibility
+- Implement responsive design with mobile-first approach
+- Optimize for performance and fast loading
+- Target 95+ Lighthouse scores across all metrics
+
+## DESIGN PRINCIPLES:
+- Modern, clean, and professional aesthetics
+- Consistent spacing using a systematic scale (8px, 16px, 24px, 32px, etc.)
+- Proper typography hierarchy with readable font sizes
+- Accessible color contrast ratios (WCAG AA compliant)
+- Smooth animations and micro-interactions
+- Professional color schemes and gradients
+
+## TECHNICAL STANDARDS:
+- Valid HTML5 markup
+- Modern CSS with custom properties (CSS variables)
+- Flexbox and CSS Grid for layouts
+- Responsive breakpoints: mobile (320px+), tablet (768px+), desktop (1024px+)
+- Touch-friendly interactive elements (44px minimum)
+- Optimized images with proper alt text
+- Fast loading with minimal external dependencies
+
+## OUTPUT FORMAT:
+Return ONLY the complete HTML code without any markdown formatting, explanations, or additional text. The HTML should be ready to save as an .html file and open in a browser immediately.`;
+}
+
 // Enhanced AI Models Configuration with latest models and proper endpoints
 const AI_MODELS_CONFIG = {
   // Google Gemini Models - Updated to latest 2025 versions
@@ -812,38 +924,57 @@ Return ONLY the complete HTML code without any markdown formatting, explanations
 }
 */
 
-// API endpoint for enhancing prompts
-app.post('/api/enhance-prompt', async (req, res) => {
-  try {
-    // This route now calls the logic in api/enhance-prompt.js
-    // For now, we'll assume it's correctly imported and called if this were a module system
-    // Since it's separate, the client will call it directly.
-    // This is a placeholder to show where it would be if server.js handled all routes.
-    res.status(501).json({ message: 'Not implemented directly in server.js, use /api/enhance-prompt via client.' });
-  } catch (error) {
-    console.error('Error in /api/enhance-prompt:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
 
-// API endpoint for fetching models
+
+// API endpoint for fetching models with connection status
 app.get('/api/models', async (req, res) => {
   try {
-    // This route now calls the logic in api/models.js
-    // For now, we'll assume it's correctly imported and called if this were a module system
-    // Since it's separate, the client will call it directly.
-    // This is a placeholder to show where it would be if server.js handled all routes.
-    res.status(501).json({ message: 'Not implemented directly in server.js, use /api/models via client.' });
+    // Check API key availability for each provider
+    const apiKeyStatus = {
+      google: !!process.env.GOOGLE_API_KEY,
+      anthropic: !!process.env.ANTHROPIC_API_KEY,
+      deepseek: !!process.env.DEEPSEEK_API_KEY,
+      mistral: !!process.env.MISTRAL_API_KEY,
+      meta: !!process.env.DEEPINFRA_API_KEY,
+      ollama: true // Always available locally
+    };
+
+    const modelsInfo = Object.entries(AI_MODELS_CONFIG).map(([key, config]) => {
+      const isConnected = apiKeyStatus[config.provider] || false;
+      
+      return {
+        id: key,
+        name: key,
+        provider: config.provider,
+        description: config.description,
+        features: config.features,
+        contextLength: config.contextLength,
+        cost: {
+          input: config.inputCost,
+          output: config.outputCost,
+          free: config.inputCost === 0
+        },
+        available: key === 'ollama' ? 'Local installation required' : 'API key required',
+        connected: isConnected
+      };
+    });
+
+    res.json({
+      models: modelsInfo,
+      totalModels: modelsInfo.length,
+      providers: [...new Set(modelsInfo.map(m => m.provider))],
+      apiKeyStatus
+    });
   } catch (error) {
     console.error('Error in /api/models:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// Update the ask-ai endpoint
+// Update the ask-ai endpoint with streaming support
 app.post('/api/ask-ai', async (req, res) => {
   try {
-    const { prompt, model = 'gemini-2.5-flash' } = req.body;
+    const { prompt, model = 'gemini-2.0-flash', html, previousPrompt } = req.body;
 
     if (!prompt) {
       return res.status(400).json({ error: 'Prompt is required' });
@@ -861,26 +992,44 @@ app.post('/api/ask-ai', async (req, res) => {
     console.log(`🚀 Processing request with ${modelConfig.provider} ${model}`);
     console.log(`📝 User prompt: ${prompt.substring(0, 100)}...`);
 
-    // Call the selected model (system prompt is already included in the AI functions)
-    const response = await callAIModel(prompt, model);
+    // Set up streaming response
+    res.setHeader('Content-Type', 'text/plain');
+    res.setHeader('Transfer-Encoding', 'chunked');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
 
-    // Post-process response for Unsplash images
-    const processedResponse = await replaceUnsplashPlaceholders(response);
+    // Build the full prompt with system prompt
+    let fullPrompt = prompt;
+    if (html && html.trim() && html !== defaultHTML) {
+      fullPrompt = `Based on this existing HTML code, please modify it according to the user's request:
 
-    res.json({
-      response: processedResponse,
-      model: {
-        name: model,
-        provider: modelConfig.provider,
-        description: modelConfig.description,
-        features: modelConfig.features,
-        contextLength: modelConfig.contextLength,
-        cost: {
-          input: modelConfig.inputCost,
-          output: modelConfig.outputCost
-        }
-      }
-    });
+EXISTING HTML:
+${html}
+
+USER REQUEST:
+${prompt}
+
+Please provide the complete modified HTML code.`;
+    } else {
+      fullPrompt = `${getSystemPrompt()}
+
+USER REQUEST:
+${prompt}`;
+    }
+
+    // Call the selected model with streaming
+    const response = await callAIModel(fullPrompt, model);
+
+    // For now, simulate streaming by sending the response in chunks
+    const chunks = response.match(/.{1,100}/g) || [response];
+    
+    for (let i = 0; i < chunks.length; i++) {
+      res.write(chunks[i]);
+      // Small delay to simulate real streaming
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+
+    res.end();
   } catch (error) {
     console.error('Error in ask-ai:', error);
     res.status(500).json({
@@ -953,29 +1102,7 @@ Enhanced prompt:`;
   }
 });
 
-// Add model info endpoint
-app.get('/api/models', (req, res) => {
-  const modelsInfo = Object.entries(AI_MODELS_CONFIG).map(([key, config]) => ({
-    id: key,
-    name: key,
-    provider: config.provider,
-    description: config.description,
-    features: config.features,
-    contextLength: config.contextLength,
-    cost: {
-      input: config.inputCost,
-      output: config.outputCost,
-      free: config.inputCost === 0
-    },
-    available: key === 'ollama' ? 'Local installation required' : 'API key required'
-  }));
 
-  res.json({
-    models: modelsInfo,
-    totalModels: modelsInfo.length,
-    providers: [...new Set(modelsInfo.map(m => m.provider))]
-  });
-});
 
 // WordPress HTML Analysis API
 app.post("/api/analyze-html", async (req, res) => {

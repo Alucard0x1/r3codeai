@@ -23,6 +23,7 @@ interface ModelConfig {
     free: boolean;
   };
   available: string;
+  connected?: boolean;
 }
 
 interface ModelSelectorProps {
@@ -177,7 +178,8 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
       features: ['text', 'local', 'private', 'free'],
       contextLength: 128000,
       cost: { input: 0, output: 0, free: true },
-      available: 'Local installation required'
+      available: 'Local installation required',
+      connected: false
     }
   ];
 
@@ -305,11 +307,21 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
                     setShowDetails(false);
                   }}
                 >
-                  <span className="model-provider-icon">
-                    {MODEL_ICONS[model.provider as keyof typeof MODEL_ICONS]}
-                  </span>
-                  <span className="model-simple-name">{model.name}</span>
-                  <span className="model-simple-cost">/{formatContext(model.contextLength)}</span>
+                  <div className="model-item-left">
+                    <span className="model-provider-icon">
+                      {MODEL_ICONS[model.provider as keyof typeof MODEL_ICONS]}
+                    </span>
+                    <span className="model-simple-name">{model.name}</span>
+                  </div>
+                  <div className="model-item-right">
+                    <span className="model-simple-cost">/{formatContext(model.contextLength)}</span>
+                    <div 
+                      className={`connection-indicator ${model.connected ? 'connected' : 'disconnected'}`}
+                      title={model.connected ? 'API Connected' : 'API Key Required'}
+                    >
+                      <div className="connection-dot"></div>
+                    </div>
+                  </div>
                 </button>
               ))}
             </div>

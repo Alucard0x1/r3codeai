@@ -366,4 +366,94 @@
 
 .model-selector[data-provider="ollama"] .model-indicator {
   background: #2d3748;
+}
+
+/* Connection Indicator Styles */
+.model-item-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.model-item-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.connection-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+.connection-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.connection-indicator.connected .connection-dot {
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+  animation: connectedPulse 2s infinite;
+}
+
+.connection-indicator.disconnected .connection-dot {
+  background: #ef4444;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+}
+
+@keyframes connectedPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+.model-dropdown-item-simple {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  color: #f3f4f6;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  margin-bottom: 4px;
+}
+
+.model-dropdown-item-simple:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.model-dropdown-item-simple.active {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.model-simple-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.model-simple-cost {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-right: 8px;
 } 
