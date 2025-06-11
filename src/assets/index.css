@@ -1633,4 +1633,61 @@
   transform: translateY(0);
 }
 
+/* Connection indicator improvements */
+.connection-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.connection-indicator.connected {
+  color: #10b981;
+}
+
+.connection-indicator.disconnected {
+  color: #ef4444;
+}
+
+.connection-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.connection-indicator.connected .connection-dot {
+  background-color: #10b981;
+  box-shadow: 0 0 4px rgba(16, 185, 129, 0.4);
+}
+
+.connection-indicator.disconnected .connection-dot {
+  background-color: #ef4444;
+  box-shadow: 0 0 4px rgba(239, 68, 68, 0.4);
+}
+
+.connection-text {
+  white-space: nowrap;
+}
+
+/* Model selector improvements */
+.model-dropdown-item-simple.active {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-color: #3b82f6;
+}
+
+.model-dropdown-item-simple:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.model-simple-name {
+  font-weight: 500;
+}
+
+.model-simple-cost {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
 

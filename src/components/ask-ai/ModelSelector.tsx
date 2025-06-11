@@ -32,7 +32,7 @@ interface ModelSelectorProps {
   disabled?: boolean;
 }
 
-const MODEL_ICONS = {
+const PROVIDER_ICONS = {
   google: '🧠',
   anthropic: '🤖',
   mistral: '🌟',
@@ -41,44 +41,7 @@ const MODEL_ICONS = {
   ollama: '💻'
 };
 
-const MODEL_COLORS = {
-  // Google Gemini Models
-  'gemini-2.5-pro': '#4285f4',
-  'gemini-2.5-flash': '#0f9d58',
-  'gemini-2.0-flash': '#34a853',
-  'gemini-1.5-pro': '#ea4335',
-  'gemini-1.5-flash': '#fbbc04',
-  'gemini-2.5-flash-native-audio': '#9aa0a6',
-  'gemini-2.0-flash-image-gen': '#34a853',
-  'imagen-3': '#4285f4',
-  'veo-2': '#ea4335',
-  
-  // Anthropic Claude Models
-  'claude-4-opus': '#ff6b35',
-  'claude-4-sonnet': '#ff8c42',
-  'claude-3.7-sonnet': '#ffa366',
-  'claude-3.5-sonnet': '#ffb399',
-  'claude-3.5-haiku': '#ffcc99',
-  'claude-3-opus': '#ff5722',
-  
-  // Mistral AI Models
-  'magistral-medium': '#ff4081',
-  'mistral-medium': '#ff6b9d',
-  'mistral-large': '#ff8bb3',
-  'pixtral-large': '#ffadd6',
-  'codestral': '#e91e63',
-  'mistral-ocr': '#f06292',
-  
-  // DeepSeek Models
-  'deepseek-r1': '#ff4444',
-  'deepseek-v3': '#ff6666',
-  
-  // Meta Llama Models
-  'llama-3.3': '#1877f2',
-  
-  // Local Models
-  'ollama': '#2d3748'
-};
+
 
 const ModelSelector: React.FC<ModelSelectorProps> = ({ 
   selectedModel, 
@@ -92,22 +55,12 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
 
   // Default models configuration (fallback) - Updated with latest 2025 API names
   const defaultModels: ModelConfig[] = [
-    // Google Gemini Models (Latest 2025)
+    // Google Gemini Models (Working models only)
     {
-      id: 'gemini-2.5-pro',
-      name: 'Gemini 2.5 Pro Preview',
-      provider: 'google',
-      description: 'Google\'s most advanced reasoning model with Deep Think capabilities',
-      features: ['text', 'multimodal', 'reasoning', 'thinking', 'code', 'large-context'],
-      contextLength: 1048576,
-      cost: { input: 1.25, output: 10.00, free: false },
-      available: 'API key required'
-    },
-    {
-      id: 'gemini-2.5-flash',
+      id: 'gemini-2.5-flash-preview',
       name: 'Gemini 2.5 Flash Preview',
       provider: 'google',
-      description: 'Google\'s first hybrid reasoning model with adjustable thinking budgets',
+      description: 'Google\'s hybrid reasoning model with adjustable thinking budgets',
       features: ['text', 'multimodal', 'reasoning', 'thinking', 'code', 'fast'],
       contextLength: 1048576,
       cost: { input: 0.15, output: 0.60, free: false },
@@ -124,13 +77,13 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
       available: 'API key required'
     },
     {
-      id: 'gemini-1.5-pro',
-      name: 'Gemini 1.5 Pro',
+      id: 'gemini-2.0-flash-001',
+      name: 'Gemini 2.0 Flash (Stable)',
       provider: 'google',
-      description: 'Complex reasoning tasks requiring more intelligence',
-      features: ['text', 'multimodal', 'reasoning', 'large-context'],
-      contextLength: 2000000,
-      cost: { input: 1.25, output: 5.00, free: false },
+      description: 'Google\'s stable fast multimodal model with native tool use',
+      features: ['text', 'multimodal', 'code', 'fast', 'tool-use'],
+      contextLength: 1000000,
+      cost: { input: 0.075, output: 0.30, free: false },
       available: 'API key required'
     },
     {
@@ -138,6 +91,16 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
       name: 'Gemini 1.5 Flash',
       provider: 'google',
       description: 'Fast and versatile performance across a diverse variety of tasks',
+      features: ['text', 'multimodal', 'code', 'fast'],
+      contextLength: 1000000,
+      cost: { input: 0.075, output: 0.30, free: false },
+      available: 'API key required'
+    },
+    {
+      id: 'gemini-1.5-flash-001',
+      name: 'Gemini 1.5 Flash (Stable)',
+      provider: 'google',
+      description: 'Stable version of Gemini 1.5 Flash',
       features: ['text', 'multimodal', 'code', 'fast'],
       contextLength: 1000000,
       cost: { input: 0.075, output: 0.30, free: false },
@@ -294,9 +257,20 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
         const response = await fetch('/api/models');
         if (response.ok) {
           const data = await response.json();
-          setModels(data.models || defaultModels);
+          const availableModels = data.models || [];
+          setModels(availableModels);
+          
+          // Auto-select the first connected model if current selection is not available
+          const currentModelExists = availableModels.find((m: ModelConfig) => m.id === selectedModel);
+          if (!currentModelExists && availableModels.length > 0) {
+            const firstConnectedModel = availableModels.find((m: ModelConfig) => m.connected) || availableModels[0];
+            onModelChange(firstConnectedModel.id);
+          }
+          
+          console.log(`✅ Loaded ${availableModels.length} models, ${data.connectedModels} connected`);
         } else {
           setModels(defaultModels);
+          setError('Failed to load models from server');
         }
       } catch (err) {
         console.error('Failed to load models:', err);
@@ -308,7 +282,7 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
     };
 
     loadModels();
-  }, []);
+  }, [selectedModel, onModelChange]);
 
   // Close dropdown on Escape key
   useEffect(() => {
@@ -351,6 +325,28 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
     }
   };
 
+  const getProviderColor = (provider: string, modelId: string) => {
+    const colors: Record<string, string> = {
+      'google': '#4285f4',
+      'anthropic': '#d97706',
+      'mistral': '#f59e0b',
+      'deepseek': '#8b5cf6',
+      'meta': '#0ea5e9',
+      'ollama': '#6b7280',
+      'gemini-1.5-flash': '#0f9d58',
+      'gemini-1.5-pro': '#ea4335',
+      'gemini-2.0-flash': '#34a853',
+      'gemini-2.5-flash-native-audio': '#9aa0a6',
+      'claude-4-opus': '#d97706',
+      'claude-4-sonnet': '#f59e0b',
+      'deepseek-r1': '#8b5cf6',
+      'deepseek-v3': '#a855f7',
+      'llama-3.3': '#0ea5e9'
+    };
+    
+    return colors[modelId] || colors[provider] || '#6b7280';
+  };
+
   return (
     <div className="model-selector">
       {/* Main Model Button */}
@@ -361,13 +357,13 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
         disabled={disabled || loading}
         title={selectedModelConfig?.description || "Select AI Model"}
         style={{
-          borderColor: MODEL_COLORS[selectedModel as keyof typeof MODEL_COLORS] || 'rgba(255, 255, 255, 0.2)',
+          borderColor: getProviderColor(selectedModelConfig?.provider, selectedModelConfig?.id) || 'rgba(255, 255, 255, 0.2)',
           borderWidth: '1px'
         }}
       >
         <div className="model-selector-content">
           <span className="model-provider-icon">
-            {MODEL_ICONS[selectedModelConfig?.provider as keyof typeof MODEL_ICONS]}
+            {PROVIDER_ICONS[selectedModelConfig?.provider as keyof typeof PROVIDER_ICONS]}
           </span>
           <div className="model-selector-text">
             <span className="model-name">{selectedModelConfig?.name}</span>
@@ -378,7 +374,7 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
           <HiChip
             size={14}
             style={{
-              color: MODEL_COLORS[selectedModel as keyof typeof MODEL_COLORS] || '#9ca3af',
+              color: getProviderColor(selectedModelConfig?.provider, selectedModelConfig?.id) || '#9ca3af',
               marginLeft: 'auto',
               transform: showDetails ? 'rotate(180deg)' : 'rotate(0deg)',
               transition: 'transform 0.2s ease'
@@ -412,7 +408,7 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
                 >
                   <div className="model-item-left">
                     <span className="model-provider-icon">
-                      {MODEL_ICONS[model.provider as keyof typeof MODEL_ICONS]}
+                      {PROVIDER_ICONS[model.provider as keyof typeof PROVIDER_ICONS]}
                     </span>
                     <span className="model-simple-name">{model.name}</span>
                   </div>
@@ -420,9 +416,12 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
                     <span className="model-simple-cost">/{formatContext(model.contextLength)}</span>
                     <div 
                       className={`connection-indicator ${model.connected ? 'connected' : 'disconnected'}`}
-                      title={model.connected ? 'API Connected' : 'API Key Required'}
+                      title={model.connected ? 'Connected & Working' : model.available}
                     >
                       <div className="connection-dot"></div>
+                      <span className="connection-text">
+                        {model.connected ? 'Connected' : 'Not Available'}
+                      </span>
                     </div>
                   </div>
                 </button>

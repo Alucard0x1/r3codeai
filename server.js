@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 import fs from "fs";
 import { JSDOM } from "jsdom";
 import JSZip from "jszip";
+import { GoogleGenAI } from '@google/genai';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -107,55 +108,93 @@ const defaultHTML = `<!DOCTYPE html>
 </body>
 </html>`;
 
-// System prompt function
+// System prompt function - Enhanced for creative, stunning designs with Unsplash integration
 function getSystemPrompt() {
-  return `You are an expert web developer and UI/UX designer specializing in creating exceptional single-file HTML websites. Your task is to generate complete, production-ready HTML files that include embedded CSS and JavaScript.
+  return `ONLY USE HTML, CSS AND JAVASCRIPT. If you want to use ICON make sure to import the library first. Try to create the best UI possible by using only HTML, CSS and JAVASCRIPT. MAKE IT RESPONSIVE USING TAILWINDCSS. Use as much as you can TailwindCSS for the CSS, if you can't do something with TailwindCSS, then use custom CSS (make sure to import <script src="https://cdn.tailwindcss.com"></script> in the head). Also, try to elaborate as much as you can, to create something unique. ALWAYS GIVE THE RESPONSE INTO A SINGLE HTML FILE.
 
-## CORE REQUIREMENTS:
-- Generate ONLY complete HTML code (no markdown, no explanations)
-- Include all CSS in <style> tags within <head>
-- Include all JavaScript in <script> tags before closing </body>
-- Use semantic HTML5 elements for accessibility
-- Implement responsive design with mobile-first approach
-- Optimize for performance and fast loading
-- Target 95+ Lighthouse scores across all metrics
+## CREATIVE VISION & DESIGN PHILOSOPHY:
+- Think like a world-class creative agency designer - every pixel matters
+- Create designs that are not just functional, but emotionally engaging and memorable
+- Push creative boundaries while maintaining usability and accessibility
+- Blend artistic vision with cutting-edge web technologies
+- Design experiences that tell a story and evoke emotions
+- Focus on creating "wow moments" that surprise and delight users
 
-## DESIGN PRINCIPLES:
-- Modern, clean, and professional aesthetics
-- Consistent spacing using a systematic scale (8px, 16px, 24px, 32px, etc.)
-- Proper typography hierarchy with readable font sizes
-- Accessible color contrast ratios (WCAG AA compliant)
-- Smooth animations and micro-interactions
-- Professional color schemes and gradients
+## VISUAL EXCELLENCE STANDARDS:
+- Stunning visual hierarchy with bold, confident typography choices
+- Sophisticated color palettes that create mood and atmosphere (use gradients, rich colors)
+- Creative use of whitespace, asymmetry, and visual tension
+- Innovative layouts that break conventional patterns while remaining intuitive
+- Rich visual textures, gradients, and depth effects
+- Micro-animations and subtle motion that brings the design to life
+- Professional photography-style imagery and visual elements
 
-## TECHNICAL STANDARDS:
-- Valid HTML5 markup
-- Modern CSS with custom properties (CSS variables)
-- Flexbox and CSS Grid for layouts
-- Responsive breakpoints: mobile (320px+), tablet (768px+), desktop (1024px+)
-- Touch-friendly interactive elements (44px minimum)
-- Optimized images with proper alt text
-- Fast loading with minimal external dependencies
+## CREATIVE TECHNIQUES TO EMPLOY:
+- Hero sections with cinematic impact and strong visual storytelling
+- Creative navigation patterns (sticky headers, floating menus, animated transitions)
+- Innovative card designs with hover effects and depth
+- Dynamic backgrounds (gradients, patterns, subtle animations)
+- Creative button designs with engaging hover states and animations
+- Unique section layouts that flow naturally but surprise the user
+- Creative use of icons, illustrations, and visual metaphors
+- Sophisticated loading states and micro-interactions
+- Modern glassmorphism, neumorphism, or other contemporary design trends
 
-## OUTPUT FORMAT:
-Return ONLY the complete HTML code without any markdown formatting, explanations, or additional text. The HTML should be ready to save as an .html file and open in a browser immediately.`;
+## TECHNICAL EXCELLENCE:
+- Use TailwindCSS for rapid styling with custom CSS for unique creative effects
+- Implement smooth animations and transitions (CSS transforms, keyframes)
+- Ensure responsive design that looks stunning on all devices
+- Create semantic, accessible HTML structure
+- Add interactive elements with JavaScript (smooth scrolling, animations, etc.)
+- Use modern CSS features (CSS Grid, Flexbox, custom properties)
+
+## CREATIVE INSPIRATION SOURCES:
+- Award-winning agency websites (Awwwards, CSS Design Awards style)
+- Modern SaaS landing pages with premium aesthetics
+- Creative portfolio sites with innovative interactions
+- Luxury brand websites with sophisticated design language
+- Contemporary art and design movements
+
+## UNSPLASH IMAGE INTEGRATION:
+**CRITICAL: For ALL images, use the Unsplash placeholder system instead of broken URLs:**
+
+### Image Placeholder Format:
+Use this exact format for all images: UNSPLASH_IMAGE_WIDTHxHEIGHT_QUERY
+
+### Examples:
+- Hero background: UNSPLASH_IMAGE_1920x1080_coffee-shop
+- Product images: UNSPLASH_IMAGE_400x300_coffee-beans
+- Team photos: UNSPLASH_IMAGE_300x300_professional-portrait
+- Gallery images: UNSPLASH_IMAGE_600x400_cafe-interior
+- Background images: UNSPLASH_IMAGE_1200x800_modern-architecture
+
+### Usage in HTML:
+<img src="UNSPLASH_IMAGE_800x600_coffee-cup" alt="Coffee cup" class="w-full h-64 object-cover">
+<div style="background-image: url('UNSPLASH_IMAGE_1920x1080_cafe-atmosphere');" class="hero-section">
+
+### Query Guidelines:
+- Use descriptive, relevant keywords separated by hyphens
+- Match the content context (coffee-shop, business, technology, nature, etc.)
+- Be specific for better image matching
+- Examples: coffee-beans, modern-office, team-meeting, food-photography, abstract-design
+
+**NEVER use placeholder.com, picsum.photos, or any other image services. ALWAYS use the UNSPLASH_IMAGE format.**
+
+## OUTPUT REQUIREMENTS:
+- Return ONLY the complete HTML code as a single file
+- No markdown formatting, explanations, or additional text
+- Include all necessary imports (TailwindCSS, fonts, icons if needed)
+- Use UNSPLASH_IMAGE placeholders for ALL images
+- Ensure the design is fully functional and visually stunning
+- Make it responsive and interactive
+
+Remember: You're not just building a website - you're crafting a digital masterpiece that showcases creativity and innovation. Make it extraordinary and memorable!`;
 }
 
 // Enhanced AI Models Configuration with latest models and proper endpoints
 const AI_MODELS_CONFIG = {
-  // Google Gemini Models - Updated to latest 2025 versions
-  'gemini-2.5-pro': {
-    provider: 'google',
-    model: 'gemini-2.5-pro-preview-06-05',
-    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-preview-06-05:generateContent',
-    apiKey: process.env.GOOGLE_API_KEY,
-    inputCost: 1.25, // $1.25 per 1M tokens
-    outputCost: 10.00, // $10.00 per 1M tokens
-    contextLength: 1048576, // 1M tokens
-    features: ['text', 'multimodal', 'reasoning', 'thinking', 'code', 'large-context'],
-    description: 'Google\'s most advanced reasoning model with Deep Think capabilities'
-  },
-  'gemini-2.5-flash': {
+  // Google Gemini Models - Working models only
+  'gemini-2.5-flash-preview': {
     provider: 'google',
     model: 'gemini-2.5-flash-preview-05-20',
     endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent',
@@ -164,7 +203,7 @@ const AI_MODELS_CONFIG = {
     outputCost: 0.60, // $0.60 per 1M tokens
     contextLength: 1048576, // 1M tokens
     features: ['text', 'multimodal', 'reasoning', 'thinking', 'code', 'fast'],
-    description: 'Google\'s first hybrid reasoning model with adjustable thinking budgets'
+    description: 'Google\'s hybrid reasoning model with adjustable thinking budgets'
   },
   'gemini-2.0-flash': {
     provider: 'google',
@@ -177,16 +216,16 @@ const AI_MODELS_CONFIG = {
     features: ['text', 'multimodal', 'code', 'fast', 'tool-use'],
     description: 'Google\'s fast multimodal model with native tool use'
   },
-  'gemini-1.5-pro': {
+  'gemini-2.0-flash-001': {
     provider: 'google',
-    model: 'gemini-1.5-pro',
-    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent',
+    model: 'gemini-2.0-flash-001',
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-001:generateContent',
     apiKey: process.env.GOOGLE_API_KEY,
-    inputCost: 1.25,
-    outputCost: 5.00,
-    contextLength: 2000000, // 2M tokens
-    features: ['text', 'multimodal', 'reasoning', 'large-context'],
-    description: 'Google\'s most capable model with 2M context'
+    inputCost: 0.075,
+    outputCost: 0.30,
+    contextLength: 1000000,
+    features: ['text', 'multimodal', 'code', 'fast', 'tool-use'],
+    description: 'Google\'s stable fast multimodal model with native tool use'
   },
   'gemini-1.5-flash': {
     provider: 'google',
@@ -199,50 +238,18 @@ const AI_MODELS_CONFIG = {
     features: ['text', 'multimodal', 'code', 'fast'],
     description: 'Fast and versatile performance across a diverse variety of tasks'
   },
-  'gemini-2.5-flash-native-audio': {
+  'gemini-1.5-flash-001': {
     provider: 'google',
-    model: 'gemini-2.5-flash-preview-native-audio-dialog',
-    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-native-audio-dialog:generateContent',
-    apiKey: process.env.GOOGLE_API_KEY,
-    inputCost: 0.15,
-    outputCost: 0.60,
-    contextLength: 1048576,
-    features: ['text', 'audio', 'video', 'native-audio-output'],
-    description: 'High quality, natural conversational audio outputs'
-  },
-  'gemini-2.0-flash-image-gen': {
-    provider: 'google',
-    model: 'gemini-2.0-flash-preview-image-generation',
-    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent',
+    model: 'gemini-1.5-flash-001',
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-001:generateContent',
     apiKey: process.env.GOOGLE_API_KEY,
     inputCost: 0.075,
     outputCost: 0.30,
     contextLength: 1000000,
-    features: ['text', 'multimodal', 'image-generation'],
-    description: 'Conversational image generation and editing'
+    features: ['text', 'multimodal', 'code', 'fast'],
+    description: 'Stable version of Gemini 1.5 Flash'
   },
-  'imagen-3': {
-    provider: 'google',
-    model: 'imagen-3.0-generate-002',
-    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:generateContent',
-    apiKey: process.env.GOOGLE_API_KEY,
-    inputCost: 0.20,
-    outputCost: 0.80,
-    contextLength: 8000,
-    features: ['text-to-image', 'image-generation'],
-    description: 'Most advanced image generation model'
-  },
-  'veo-2': {
-    provider: 'google',
-    model: 'veo-2.0-generate-001',
-    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/veo-2.0-generate-001:generateContent',
-    apiKey: process.env.GOOGLE_API_KEY,
-    inputCost: 0.50,
-    outputCost: 2.00,
-    contextLength: 8000,
-    features: ['text-to-video', 'video-generation'],
-    description: 'High quality video generation'
-  },
+
 
   // Anthropic Claude Models - Updated to latest 2025 versions
   'claude-4-opus': {
@@ -587,65 +594,136 @@ app.post("/api/deploy", async (req, res) => {
 });
 
 // Enhanced API call functions for each provider
+// Non-streaming version for enhance-prompt
 async function callGoogleGemini(prompt, model) {
-  const config = AI_MODELS_CONFIG[model];
-  if (!config || !config.apiKey) {
-    throw new Error(`Google API key not configured for model: ${model}`);
+  if (!process.env.GOOGLE_API_KEY) {
+    throw new Error(`Google API key not configured`);
   }
 
-  // Use the hardcoded enhanced system prompt
-  // The enhanced prompt should be fetched from the /api/enhance-prompt endpoint by the client
+  try {
+    // Get the model configuration
+    const modelConfig = AI_MODELS_CONFIG[model];
+    if (!modelConfig) {
+      throw new Error(`Model configuration not found: ${model}`);
+    }
+
+    // Initialize the Google Gen AI client
+    const ai = new GoogleGenAI({
+      apiKey: process.env.GOOGLE_API_KEY,
+    });
+
+    // Configuration for the model
+    const config = {
+      responseMimeType: 'text/plain',
+    };
+
+    // Use the hardcoded enhanced system prompt
+    // The enhanced prompt should be fetched from the /api/enhance-prompt endpoint by the client
     // For the purpose of this backend, we'll assume the client sends the full prompt (original or enhanced)
     const fullPrompt = prompt; // Placeholder, client should manage enhancement
 
-    // Original line that used the local function:
-    // const enhancedPrompt = buildEnhancedSystemPrompt() + '\n\n' + prompt;
-  
-  const requestData = {
-    contents: [{
-      parts: [{
-        text: fullPrompt
-      }]
-    }],
-    generationConfig: {
-      temperature: 0.7,
-      topK: 40,
-      topP: 0.95,
-      maxOutputTokens: 8192,
-    },
-    safetySettings: [
+    // Create the contents array as shown in sample_api_call.txt
+    const contents = [
       {
-        category: "HARM_CATEGORY_HARASSMENT",
-        threshold: "BLOCK_MEDIUM_AND_ABOVE"
+        role: 'user',
+        parts: [
+          {
+            text: fullPrompt,
+          },
+        ],
       },
+    ];
+
+    console.log(`Calling Google Gemini model: ${modelConfig.model}`);
+    
+    // Generate content using the new SDK with the actual model name
+    const response = await ai.models.generateContent({
+      model: modelConfig.model,
+      config: config,
+      contents: contents,
+    });
+
+    // Extract the text from the response
+    if (response && response.text) {
+      return response.text;
+    } else {
+      throw new Error('Invalid response structure from Google Gemini API');
+    }
+
+  } catch (error) {
+    console.error('Google Gemini API Error:', error);
+    throw new Error(`Google Gemini API Error: ${error.message}`);
+  }
+}
+
+// Streaming version with Unsplash integration for ask-ai
+async function callGoogleGeminiStreamWithUnsplash(prompt, model, res) {
+  if (!process.env.GOOGLE_API_KEY) {
+    throw new Error(`Google API key not configured`);
+  }
+
+  try {
+    // Get the model configuration
+    const modelConfig = AI_MODELS_CONFIG[model];
+    if (!modelConfig) {
+      throw new Error(`Model configuration not found: ${model}`);
+    }
+
+    // Initialize the Google Gen AI client
+    const ai = new GoogleGenAI({
+      apiKey: process.env.GOOGLE_API_KEY,
+    });
+
+    // Configuration for the model
+    const config = {
+      responseMimeType: 'text/plain',
+    };
+
+    // Create the contents array as shown in sample_api_call.txt
+    const contents = [
       {
-        category: "HARM_CATEGORY_HATE_SPEECH",
-        threshold: "BLOCK_MEDIUM_AND_ABOVE"
+        role: 'user',
+        parts: [
+          {
+            text: prompt,
+          },
+        ],
+      },
+    ];
+
+    console.log(`Calling Google Gemini model (streaming): ${modelConfig.model}`);
+    
+    // Generate content stream using the new SDK with the actual model name
+    const response = await ai.models.generateContentStream({
+      model: modelConfig.model,
+      config: config,
+      contents: contents,
+    });
+
+    // Collect all chunks first to process Unsplash placeholders
+    let fullResponse = '';
+    for await (const chunk of response) {
+      if (chunk.text) {
+        fullResponse += chunk.text;
       }
-    ]
-  };
+    }
 
-  const response = await fetch(`${config.endpoint}?key=${config.apiKey}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(requestData)
-  });
+    // Replace Unsplash placeholders with actual URLs
+    const processedResponse = await replaceUnsplashPlaceholders(fullResponse);
 
-  if (!response.ok) {
-    const errorData = await response.text();
-    console.error('Google Gemini API Error:', errorData);
-    throw new Error(`Google Gemini API Error: ${response.status} ${response.statusText}`);
+    // Now stream the processed response
+    const chunks = processedResponse.match(/.{1,100}/g) || [processedResponse];
+    
+    for (let i = 0; i < chunks.length; i++) {
+      res.write(chunks[i]);
+      // Small delay to simulate real streaming
+      await new Promise(resolve => setTimeout(resolve, 30));
+    }
+
+  } catch (error) {
+    console.error('Google Gemini Streaming API Error:', error);
+    throw new Error(`Google Gemini Streaming API Error: ${error.message}`);
   }
-
-  const data = await response.json();
-  
-  if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-    throw new Error('Invalid response from Google Gemini API');
-  }
-
-  return data.candidates[0].content.parts[0].text;
 }
 
 async function callAnthropicClaude(prompt, model) {
@@ -1095,7 +1173,7 @@ app.get('/api/models', async (req, res) => {
 // Update the ask-ai endpoint with streaming support
 app.post('/api/ask-ai', async (req, res) => {
   try {
-    const { prompt, model = 'gemini-2.5-flash', html, previousPrompt } = req.body;
+    const { prompt, model = 'gemini-1.5-flash', html, previousPrompt } = req.body;
 
     if (!prompt) {
       return res.status(400).json({ error: 'Prompt is required' });
@@ -1139,24 +1217,34 @@ ${prompt}`;
     }
 
     // Call the selected model with streaming
-    const response = await callAIModel(fullPrompt, model);
-
-    // For now, simulate streaming by sending the response in chunks
-    const chunks = response.match(/.{1,100}/g) || [response];
-    
-    for (let i = 0; i < chunks.length; i++) {
-      res.write(chunks[i]);
-      // Small delay to simulate real streaming
-      await new Promise(resolve => setTimeout(resolve, 50));
+    if (modelConfig.provider === 'google') {
+      // Use real streaming for Google models with Unsplash integration
+      await callGoogleGeminiStreamWithUnsplash(fullPrompt, model, res);
+      res.end();
+    } else {
+      // For other models, use the regular call and simulate streaming
+      const response = await callAIModel(fullPrompt, model);
+      
+      // Replace Unsplash placeholders with actual URLs
+      const processedResponse = await replaceUnsplashPlaceholders(response);
+      
+      // Simulate streaming by sending the response in chunks
+      const chunks = processedResponse.match(/.{1,100}/g) || [processedResponse];
+      
+      for (let i = 0; i < chunks.length; i++) {
+        res.write(chunks[i]);
+        // Small delay to simulate real streaming
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
+      
+      res.end();
     }
-
-    res.end();
   } catch (error) {
     console.error('Error in ask-ai:', error);
     res.status(500).json({
       error: error.message,
       suggestion: error.message.includes('Ollama') ?
-        'Try using a cloud model like gemini-2.0-flash or claude-sonnet' :
+        'Try using a cloud model like gemini-1.5-flash or claude-sonnet' :
         'Please check your API keys and try again'
     });
   }
@@ -1165,7 +1253,7 @@ ${prompt}`;
 // Update enhance-prompt endpoint
 app.post('/api/enhance-prompt', async (req, res) => {
   try {
-    const { prompt, model = 'gemini-2.5-flash' } = req.body;
+    const { prompt, model = 'gemini-2.5-flash-preview-05-20' } = req.body;
 
     if (!prompt) {
       return res.status(400).json({ error: 'Prompt is required' });
@@ -1181,44 +1269,54 @@ app.post('/api/enhance-prompt', async (req, res) => {
 
     console.log(`🔧 Enhancing prompt with ${modelConfig.provider} ${model}`);
 
-    const enhancementPrompt = `You are an expert prompt engineer specializing in web development and UI/UX design. Your task is to enhance user prompts to produce exceptional single-file HTML websites.
+    const enhancementPrompt = `You are an expert web developer and UI/UX designer specializing in creating outstanding single-file HTML websites. You excel at modern design principles, performance optimization, and user experience.
 
-PROMPT ENHANCEMENT REQUEST:
-Please enhance this web development prompt to be more specific, detailed, and likely to produce outstanding results:
+Your task is to enhance prompts to create better, more detailed specifications for generating exceptional single HTML file websites.
 
-Original prompt: "${prompt}"
+Key enhancement areas:
+- Modern UI/UX design patterns and best practices
+- Responsive design with mobile-first approach
+- Accessibility (WCAG 2.1 AA compliance)
+- Performance optimization (Lighthouse 95+ scores)
+- Semantic HTML5 structure
+- CSS Grid/Flexbox layouts
+- Smooth animations and micro-interactions
+- Color psychology and typography hierarchy
+- Component-based thinking (hero, navigation, cards, forms, etc.)
+- Cross-browser compatibility
+- SEO optimization
+- High-quality imagery using Unsplash integration
 
-Enhanced prompt should:
-- Be more specific about design requirements and visual style
-- Include modern UI/UX best practices and current design trends
-- Specify technical requirements (responsive design, accessibility, performance optimization)
-- Add creative elements that would make the result stand out and be memorable
-- Include specific color schemes, typography choices, or interactive elements if appropriate
-- Make it optimized for single HTML file generation with embedded CSS and JavaScript
-- Suggest appropriate high-quality images and their placement
-- Include specific layout patterns and component suggestions
+Always specify:
+1. Exact color palettes with hex codes
+2. Typography choices (system fonts preferred)
+3. Layout structure and components
+4. Interactive elements and hover states
+5. Responsive breakpoints
+6. Loading states and error handling
+7. Accessibility features (ARIA labels, focus management)
+8. Performance requirements (image optimization, CSS/JS inline)
+9. Specific image requirements with descriptive keywords for Unsplash
 
-Return only the enhanced prompt without any explanations or additional text.
+For images, always specify:
+- Image dimensions and aspect ratios
+- Descriptive keywords for image content (e.g., "coffee-shop", "modern-office", "team-meeting")
+- Image placement and styling requirements
+- Alt text requirements for accessibility
 
-Enhanced prompt:`;
+Original prompt to enhance: "${prompt}"
+
+Return only the enhanced prompt with specific, actionable requirements including detailed image specifications:`;
 
     const response = await callAIModel(enhancementPrompt, model);
 
     res.json({
-      enhancedPrompt: response.trim(),
-      model: {
-        name: model,
-        provider: modelConfig.provider,
-        description: modelConfig.description
-      }
+      enhancedPrompt: response.trim()
     });
   } catch (error) {
     console.error('Error in enhance-prompt:', error);
     res.status(500).json({
-      error: error.message,
-      suggestion: error.message.includes('Ollama') ?
-        'Try using a cloud model for prompt enhancement' :
-        'Please check your API keys and try again'
+      error: error.message || 'Failed to enhance prompt'
     });
   }
 });

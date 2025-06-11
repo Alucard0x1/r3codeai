@@ -1,0 +1,663 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Roastery - Artisan Coffee Experience</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom CSS for unique effects and overrides */
+        :root {
+            --primary-brown: #3E2723; /* Dark Coffee */
+            --secondary-cream: #F5E8D6; /* Warm Cream */
+            --accent-gold: #D4AF37; /* Muted Gold */
+            --dark-green: #2E4032; /* Rich Green */
+            --text-light: #F5E8D6;
+            --text-dark: #3E2723;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            background-color: var(--secondary-cream); /* Overall background */
+            color: var(--text-dark);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-brown);
+        }
+
+        /* Hero Section Specifics */
+        .hero-section {
+            background-image: linear-gradient(to right bottom, rgba(0, 0, 0, 0.4), rgba(62, 39, 35, 0.8)), url('https://images.unsplash.com/photo-1511920170033-f8396924de34?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Coffee beans & brew */
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-overlay {
+            background: linear-gradient(135deg, rgba(62, 39, 35, 0.85) 0%, rgba(46, 64, 50, 0.75) 100%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: var(--text-light);
+            animation: fadeInScale 1.5s ease-out forwards;
+            padding: 2rem; /* Add padding for small screens */
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Navigation */
+        .header-sticky {
+            background-color: rgba(62, 39, 35, 0.95); /* Semi-transparent dark brown */
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .header-transparent {
+            background-color: transparent;
+            box-shadow: none;
+        }
+
+        /* Creative Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-gold), #B8860B); /* Gold gradient */
+            color: var(--primary-brown);
+            padding: 0.8rem 2.5rem;
+            border-radius: 9999px; /* Pill shape */
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(255, 255, 255, 0.15); /* Light ripple effect */
+            transition: all 0.7s ease;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 0;
+        }
+
+        .btn-primary:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0;
+        }
+
+        /* Glassmorphism Card Effect for Menu Items */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem; /* Tailwind `rounded-xl` equivalent */
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+        }
+
+        /* Section Backgrounds/Gradients */
+        .bg-gradient-brown-cream {
+            background: linear-gradient(to bottom right, var(--secondary-cream), var(--primary-brown) 80%);
+        }
+
+        .bg-pattern-coffee {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.1' fill-rule='evenodd'%3E%3Ccircle cx='30' cy='30' r='10'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 30px;
+            background-repeat: repeat;
+        }
+
+        /* Subtle animations for sections on scroll */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Parallax effect for about section image */
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Custom scrollbar for subtle effect */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--secondary-cream);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-brown);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-gold);
+        }
+
+        /* Mobile menu specific styles */
+        .mobile-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        .mobile-menu-overlay {
+            background: rgba(0,0,0,0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 90;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body class="text-gray-900 bg-secondary-cream">
+
+    <!-- Header / Navigation -->
+    <header id="main-header" class="header-transparent py-4 fixed w-full z-50 transition-all duration-300 ease-in-out">
+        <nav class="container mx-auto px-6 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-mug-hot text-accent-gold text-3xl"></i>
+                <a href="#hero" class="text-white text-3xl font-bold tracking-tight transition-colors duration-300 ease-in-out">
+                    <span class="font-playfair font-black">The Roastery</span>
+                </a>
+            </div>
+            <!-- Desktop Navigation -->
+            <ul class="hidden md:flex space-x-8 text-white text-lg font-semibold">
+                <li><a href="#about" class="hover:text-accent-gold transition-colors duration-200">About Us</a></li>
+                <li><a href="#menu" class="hover:text-accent-gold transition-colors duration-200">Menu</a></li>
+                <li><a href="#experience" class="hover:text-accent-gold transition-colors duration-200">Experience</a></li>
+                <li><a href="#contact" class="hover:text-accent-gold transition-colors duration-200">Contact</a></li>
+            </ul>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-white text-3xl focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay"></div>
+
+    <!-- Mobile Menu Sidebar -->
+    <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 h-full w-64 bg-primary-brown shadow-lg z-[100] p-6 md:hidden">
+        <div class="flex justify-end mb-8">
+            <button id="close-mobile-menu" class="text-white text-3xl focus:outline-none">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="flex flex-col space-y-6 text-white text-xl font-semibold">
+            <li><a href="#about" class="hover:text-accent-gold transition-colors duration-200" onclick="closeMobileMenu()">About Us</a></li>
+            <li><a href="#menu" class="hover:text-accent-gold transition-colors duration-200" onclick="closeMobileMenu()">Menu</a></li>
+            <li><a href="#experience" class="hover:text-accent-gold transition-colors duration-200" onclick="closeMobileMenu()">Experience</a></li>
+            <li><a href="#contact" class="hover:text-accent-gold transition-colors duration-200" onclick="closeMobileMenu()">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section relative">
+        <div class="hero-content z-20 max-w-4xl px-4">
+            <h1 class="text-6xl md:text-7xl lg:text-8xl font-playfair font-extrabold leading-tight mb-6 drop-shadow-lg animate__animated animate__fadeInUp">
+                Crafting Moments, One Sip at a Time.
+            </h1>
+            <p class="text-xl md:text-2xl lg:text-3xl font-light mb-10 opacity-90 animate__animated animate__fadeInUp animate__delay-0.5s">
+                Experience the art of coffee. Hand-roasted beans, expertly brewed.
+            </p>
+            <a href="#menu" class="btn-primary inline-block animate__animated animate__fadeInUp animate__delay-1s">
+                Explore Our Menu
+            </a>
+        </div>
+        <div class="absolute bottom-10 animate-bounce z-20">
+            <a href="#about" class="text-white text-3xl">
+                <i class="fas fa-chevron-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-20 md:py-32 bg-secondary-cream text-primary-brown animate-on-scroll">
+        <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="lg:order-2 relative group overflow-hidden rounded-3xl shadow-xl transform transition-transform duration-500 hover:scale-105">
+                <img src="https://images.unsplash.com/photo-1544781498-84223126f58f?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Cozy Coffee Shop Interior" class="w-full h-auto object-cover rounded-3xl">
+                <div class="absolute inset-0 bg-primary-brown opacity-20 group-hover:opacity-0 transition-opacity duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-primary-brown to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <h3 class="text-2xl font-playfair font-semibold">Our inviting ambiance</h3>
+                    <p class="text-sm">A perfect spot for connection and creativity.</p>
+                </div>
+            </div>
+            <div class="lg:order-1">
+                <span class="text-accent-gold text-lg font-semibold uppercase tracking-wider mb-2 block">Our Story</span>
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold leading-tight mb-8">
+                    More Than Just Coffee, It's a Passion.
+                </h2>
+                <p class="text-lg leading-relaxed mb-6">
+                    Born from a deep love for the bean, The Roastery is a sanctuary for coffee enthusiasts. We meticulously source the finest beans from around the globe, ensuring ethical and sustainable practices from farm to cup.
+                </p>
+                <p class="text-lg leading-relaxed mb-8">
+                    Every roast, every brew, is a testament to our dedication to quality and flavor. We believe in the power of a perfect cup to inspire, connect, and elevate your day. Come, taste the difference passion makes.
+                </p>
+                <div class="flex space-x-6">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-seedling text-accent-gold text-3xl"></i>
+                        <span class="font-semibold text-primary-brown">Ethically Sourced</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-certificate text-accent-gold text-3xl"></i>
+                        <span class="font-semibold text-primary-brown">Artisan Roasted</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-20 md:py-32 bg-primary-brown text-text-light animate-on-scroll bg-pattern-coffee">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-accent-gold text-lg font-semibold uppercase tracking-wider mb-2 block">Our Offerings</span>
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold leading-tight text-text-light">
+                    Sip the Perfection
+                </h2>
+                <p class="text-lg mt-4 max-w-2xl mx-auto opacity-90">
+                    From timeless classics to unique seasonal delights, our menu is crafted to satisfy every palate. Each drink is a masterpiece.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Menu Item 1 -->
+                <div class="glass-card p-6 flex flex-col items-center text-center">
+                    <img src="https://images.unsplash.com/photo-1542836267-9d7a224c6e9a?q=80&w=2835&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Espresso" class="w-32 h-32 object-cover rounded-full mb-6 shadow-lg border-2 border-accent-gold">
+                    <h3 class="text-2xl font-playfair font-bold text-accent-gold mb-2">Espresso</h3>
+                    <p class="text-sm opacity-80 mb-4">A concentrated shot of pure coffee essence, rich and bold.</p>
+                    <span class="text-3xl font-bold text-white">$3.50</span>
+                </div>
+
+                <!-- Menu Item 2 -->
+                <div class="glass-card p-6 flex flex-col items-center text-center">
+                    <img src="https://images.unsplash.com/photo-1579207038930-b33390c50d4f?q=80&w=2835&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Latte Art" class="w-32 h-32 object-cover rounded-full mb-6 shadow-lg border-2 border-accent-gold">
+                    <h3 class="text-2xl font-playfair font-bold text-accent-gold mb-2">Signature Latte</h3>
+                    <p class="text-sm opacity-80 mb-4">Creamy, dreamy perfection topped with exquisite latte art.</p>
+                    <span class="text-3xl font-bold text-white">$5.00</span>
+                </div>
+
+                <!-- Menu Item 3 -->
+                <div class="glass-card p-6 flex flex-col items-center text-center">
+                    <img src="https://images.unsplash.com/photo-1507133748231-155e82b79a74?q=80&w=2835&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Cold Brew" class="w-32 h-32 object-cover rounded-full mb-6 shadow-lg border-2 border-accent-gold">
+                    <h3 class="text-2xl font-playfair font-bold text-accent-gold mb-2">Artisan Cold Brew</h3>
+                    <p class="text-sm opacity-80 mb-4">Smooth, low-acid, and naturally sweet. A refreshing experience.</p>
+                    <span class="text-3xl font-bold text-white">$5.50</span>
+                </div>
+
+                <!-- Menu Item 4 -->
+                <div class="glass-card p-6 flex flex-col items-center text-center">
+                    <img src="https://images.unsplash.com/photo-1621251996222-1d5440ed351e?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Pour Over" class="w-32 h-32 object-cover rounded-full mb-6 shadow-lg border-2 border-accent-gold">
+                    <h3 class="text-2xl font-playfair font-bold text-accent-gold mb-2">Single Origin Pour Over</h3>
+                    <p class="text-sm opacity-80 mb-4">Highlighting unique notes of rare, single-origin beans.</p>
+                    <span class="text-3xl font-bold text-white">$6.00</span>
+                </div>
+
+                <!-- Menu Item 5 -->
+                <div class="glass-card p-6 flex flex-col items-center text-center">
+                    <img src="https://images.unsplash.com/photo-1549495092-299dd959e7a4?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Matcha" class="w-32 h-32 object-cover rounded-full mb-6 shadow-lg border-2 border-accent-gold">
+                    <h3 class="text-2xl font-playfair font-bold text-accent-gold mb-2">Ceremonial Matcha Latte</h3>
+                    <p class="text-sm opacity-80 mb-4">Vibrant green tea, whisked to perfection with creamy milk.</p>
+                    <span class="text-3xl font-bold text-white">$5.75</span>
+                </div>
+
+                <!-- Menu Item 6 -->
+                <div class="glass-card p-6 flex flex-col items-center text-center">
+                    <img src="https://images.unsplash.com/photo-1518335359267-27b9b7754b5f?q=80&w=2835&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Pastries" class="w-32 h-32 object-cover rounded-full mb-6 shadow-lg border-2 border-accent-gold">
+                    <h3 class="text-2xl font-playfair font-bold text-accent-gold mb-2">Artisan Pastries</h3>
+                    <p class="text-sm opacity-80 mb-4">Freshly baked daily, the perfect companion to your coffee.</p>
+                    <span class="text-3xl font-bold text-white">From $4.00</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section (Features) -->
+    <section id="experience" class="py-20 md:py-32 bg-gradient-brown-cream text-primary-brown animate-on-scroll">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-accent-gold text-lg font-semibold uppercase tracking-wider mb-2 block">Our Promise</span>
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold leading-tight">
+                    Beyond the Cup: The Roastery Experience
+                </h2>
+                <p class="text-lg mt-4 max-w-2xl mx-auto opacity-90">
+                    We're committed to more than just great coffee. Discover what makes us unique.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                <!-- Feature 1 -->
+                <div class="p-8 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center text-center">
+                    <div class="text-5xl text-accent-gold mb-6">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3 class="text-2xl font-playfair font-bold mb-4">Sustainable Sourcing</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        We partner directly with farmers, ensuring fair wages and environmentally friendly practices.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="p-8 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center text-center">
+                    <div class="text-5xl text-accent-gold mb-6">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <h3 class="text-2xl font-playfair font-bold mb-4">Community Hub</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        A welcoming space where connections are brewed and creativity flourishes.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="p-8 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center text-center">
+                    <div class="text-5xl text-accent-gold mb-6">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                    <h3 class="text-2xl font-playfair font-bold mb-4">Expert Baristas</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        Our passionate team is trained to perfection, crafting every drink with care and precision.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 md:py-32 bg-primary-brown text-text-light animate-on-scroll">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-accent-gold text-lg font-semibold uppercase tracking-wider mb-2 block">What Our Guests Say</span>
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold leading-tight text-text-light">
+                    Voices of Delight
+                </h2>
+                <p class="text-lg mt-4 max-w-2xl mx-auto opacity-90">
+                    Hear directly from those who've experienced The Roastery magic.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <!-- Testimonial 1 -->
+                <div class="glass-card p-8 flex flex-col items-center text-center">
+                    <i class="fas fa-quote-left text-accent-gold text-3xl mb-4"></i>
+                    <p class="text-lg leading-relaxed italic mb-6">
+                        "The Roastery is my daily dose of happiness. The coffee is exceptional, and the atmosphere is incredibly inviting. Best latte art in town!"
+                    </p>
+                    <div class="flex items-center space-x-4">
+                        <img src="https://i.pravatar.cc/70?img=1" alt="Customer Avatar" class="w-16 h-16 rounded-full border-2 border-accent-gold object-cover">
+                        <div>
+                            <p class="font-bold text-white">Sarah M.</p>
+                            <p class="text-sm text-gray-300">Coffee Enthusiast</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="glass-card p-8 flex flex-col items-center text-center">
+                    <i class="fas fa-quote-left text-accent-gold text-3xl mb-4"></i>
+                    <p class="text-lg leading-relaxed italic mb-6">
+                        "I'm particular about my cold brew, and The Roastery consistently delivers. Smooth, rich, and never bitter. Their pastries are a delightful bonus!"
+                    </p>
+                    <div class="flex items-center space-x-4">
+                        <img src="https://i.pravatar.cc/70?img=2" alt="Customer Avatar" class="w-16 h-16 rounded-full border-2 border-accent-gold object-cover">
+                        <div>
+                            <p class="font-bold text-white">David L.</p>
+                            <p class="text-sm text-gray-300">Local Artist</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="glass-card p-8 flex flex-col items-center text-center">
+                    <i class="fas fa-quote-left text-accent-gold text-3xl mb-4"></i>
+                    <p class="text-lg leading-relaxed italic mb-6">
+                        "Finally, a coffee shop that understands quality. The pour-over selection is fantastic, and the staff are always knowledgeable and friendly."
+                    </p>
+                    <div class="flex items-center space-x-4">
+                        <img src="https://i.pravatar.cc/70?img=3" alt="Customer Avatar" class="w-16 h-16 rounded-full border-2 border-accent-gold object-cover">
+                        <div>
+                            <p class="font-bold text-white">Emily R.</p>
+                            <p class="text-sm text-gray-300">Remote Worker</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 md:py-32 bg-secondary-cream text-primary-brown animate-on-scroll">
+        <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            <div class="lg:order-2">
+                <div class="text-center lg:text-left mb-10">
+                    <span class="text-accent-gold text-lg font-semibold uppercase tracking-wider mb-2 block">Connect With Us</span>
+                    <h2 class="text-4xl md:text-5xl font-playfair font-bold leading-tight">
+                        Reach Out and Taste the Difference.
+                    </h2>
+                </div>
+                <form class="bg-white p-8 rounded-xl shadow-xl space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                        <input type="text" id="name" name="name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-gold focus:border-transparent transition duration-200" placeholder="Your Name">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input type="email" id="email" name="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-gold focus:border-transparent transition duration-200" placeholder="your@email.com">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                        <textarea id="message" name="message" rows="5" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-gold focus:border-transparent transition duration-200" placeholder="Tell us what's on your mind..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary w-full md:w-auto px-10 py-3 text-lg">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+
+            <div class="lg:order-1 text-center lg:text-left mt-10 lg:mt-0">
+                <p class="text-lg leading-relaxed mb-8 max-w-xl">
+                    Whether you have a question about our beans, want to book a private tasting, or just want to say hello, we'd love to hear from you. Find us at our cozy location or drop us a line.
+                </p>
+                <div class="space-y-6 mb-10">
+                    <div class="flex items-center space-x-4">
+                        <i class="fas fa-map-marker-alt text-accent-gold text-2xl"></i>
+                        <p class="text-lg">123 Brew Street, Coffeeville, CA 90210</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <i class="fas fa-phone text-accent-gold text-2xl"></i>
+                        <p class="text-lg">(123) 456-7890</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <i class="fas fa-envelope text-accent-gold text-2xl"></i>
+                        <p class="text-lg">info@theroastery.com</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <i class="fas fa-clock text-accent-gold text-2xl"></i>
+                        <p class="text-lg">Mon-Fri: 7 AM - 7 PM, Sat-Sun: 8 AM - 6 PM</p>
+                    </div>
+                </div>
+                <div class="relative w-full h-80 rounded-xl overflow-hidden shadow-xl">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.2104113337483!2d-122.41941568468161!3d37.77492947975935!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085808b5e4d2a01%3A0xc0c8d1a1b1c2d0f5!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1678901234567!5m2!1sen!2sus" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade"
+                        class="absolute inset-0">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary-brown text-text-light py-12 text-center">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-center space-x-4 mb-6">
+                <i class="fas fa-mug-hot text-accent-gold text-4xl"></i>
+                <span class="text-white text-3xl font-bold tracking-tight font-playfair">The Roastery</span>
+            </div>
+            <p class="text-sm mb-6 opacity-80">
+                &copy; 2024 The Roastery. All rights reserved. | Crafted with Passion
+            </p>
+            <div class="flex justify-center space-x-6 text-2xl">
+                <a href="#" class="text-white hover:text-accent-gold transition-colors duration-200" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-white hover:text-accent-gold transition-colors duration-200" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-white hover:text-accent-gold transition-colors duration-200" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for interactivity -->
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Sticky Header & Header background change on scroll
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) { // Adjust scroll threshold as needed
+                header.classList.remove('header-transparent');
+                header.classList.add('header-sticky');
+            } else {
+                header.classList.remove('header-sticky');
+                header.classList.add('header-transparent');
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMobileMenuButton = document.getElementById('close-mobile-menu');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+
+        function openMobileMenu() {
+            mobileMenu.classList.add('active');
+            mobileMenuOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+        }
+
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('active');
+            mobileMenuOverlay.classList.remove('active');
+            document.body.style.overflow = ''; // Allow scrolling
+        }
+
+        mobileMenuButton.addEventListener('click', openMobileMenu);
+        closeMobileMenuButton.addEventListener('click', closeMobileMenu);
+        mobileMenuOverlay.addEventListener('click', closeMobileMenu); // Close when clicking outside
+
+        // Intersection Observer for scroll animations
+        const animateElements = document.querySelectorAll('.animate-on-scroll');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // Stop observing once element is visible if you only want it to animate once
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1, // Element is 10% visible
+            rootMargin: "0px"
+        });
+
+        animateElements.forEach(element => {
+            observer.observe(element);
+        });
+
+        // Initial check for hero section animation (since it's at the top)
+        document.addEventListener('DOMContentLoaded', () => {
+            // No specific JS for hero, CSS keyframes handle it.
+            // If any elements were initially out of view but wanted to animate immediately,
+            // they would need 'is-visible' added or observer logic applied.
+        });
+
+    </script>
+</body>
+</html>

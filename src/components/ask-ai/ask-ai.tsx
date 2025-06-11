@@ -29,7 +29,7 @@ function AskAI({
   const [previousPrompt, setPreviousPrompt] = useState("");
   const [typingProgress, setTypingProgress] = useState(0);
   const [isEnhancing, setIsEnhancing] = useState(false);
-  const [selectedModel, setSelectedModel] = useState("gemini-2.5-flash");
+  const [selectedModel, setSelectedModel] = useState("gemini-1.5-flash");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Smart auto-resize function that considers container size and expands upward
@@ -174,38 +174,36 @@ function AskAI({
 
     let contentResponse = "";
     let lastRenderTime = 0;
-    let estimatedTotalLength = 3000; // Estimate for progress calculation
     
     try {
+      const requestBody = {
+        prompt,
+        model: selectedModel,
+        ...(html === defaultHTML ? {} : { html }),
+        ...(previousPrompt ? { previousPrompt } : {}),
+      };
+      
       console.log("📡 Making fetch request to /api/ask-ai with model:", selectedModel);
+      
       const request = await fetch("/api/ask-ai", {
         method: "POST",
-        body: JSON.stringify({
-          prompt,
-          model: selectedModel,
-          ...(html === defaultHTML ? {} : { html }),
-          ...(previousPrompt ? { previousPrompt } : {}),
-        }),
+        body: JSON.stringify(requestBody),
         headers: {
           "Content-Type": "application/json",
-          "Cache-Control": "no-cache",
         },
       });
-      console.log("📡 Fetch response received:", request.status, request.statusText);
+
       if (request && request.body) {
-        console.log("✅ Request has body, checking status...");
         if (!request.ok) {
-          console.error("❌ Request failed:", request.status, request.statusText);
           const res = await request.json();
           toast.error(res.message);
           setisAiWorking(false);
           return;
         }
-        console.log("✅ Request OK, starting to read stream...");
+
         const reader = request.body.getReader();
         const decoder = new TextDecoder("utf-8");
-        console.log("🚀 Starting to read streaming response...");
-
+        
         const read = async () => {
           const { done, value } = await reader.read();
           if (done) {
@@ -217,86 +215,46 @@ function AskAI({
             setTypingProgress(100);
             setView("preview");
 
-            // Final cleanup - ensure we have complete HTML
+            // Set final complete HTML
             const finalDoc = contentResponse.match(
               /<!DOCTYPE html>[\s\S]*<\/html>/
             )?.[0];
             if (finalDoc) {
               setHtml(finalDoc);
             }
-
             return;
           }
 
           const chunk = decoder.decode(value, { stream: true });
-          console.log("📝 Received chunk:", chunk.length, "chars:", chunk.substring(0, 50) + "...");
           contentResponse += chunk;
-          console.log("📝 Total content so far:", contentResponse.length, "chars");
 
-          // Extract HTML content from the response (remove markdown code blocks if present)
-          let htmlContent = contentResponse;
-
-          // Remove markdown code block markers if present
-          if (htmlContent.includes('```html')) {
-            htmlContent = htmlContent.replace(/```html\s*/, '').replace(/```\s*$/, '');
-          } else if (htmlContent.includes('```')) {
-            htmlContent = htmlContent.replace(/```\s*/, '').replace(/```\s*$/, '');
-          }
-
-          console.log("📝 HTML content after markdown cleanup:", htmlContent.substring(0, 200) + "...");
-
-          // Look for HTML document - be more flexible with detection
-          let newHtml = htmlContent.match(/<!DOCTYPE html>[\s\S]*/)?.[0];
-
-          // If no DOCTYPE found, look for <html> tag
-          if (!newHtml) {
-            newHtml = htmlContent.match(/<html[\s\S]*/)?.[0];
-          }
-
-          // If still no HTML found, but we have content that looks like HTML, wrap it
-          if (!newHtml && (htmlContent.includes('<') || htmlContent.includes('body') || htmlContent.includes('head'))) {
-            // Create a basic HTML structure and put the content inside
-            newHtml = `<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Generated Content</title>
-</head>
-<body>
-${htmlContent}
-</body>
-</html>`;
-          }
-
+          const newHtml = contentResponse.match(
+            /<!DOCTYPE html>[\s\S]*/
+          )?.[0];
+          
           if (newHtml) {
-            // Create a more complete HTML document for better iframe rendering
             let partialDoc = newHtml;
-
-            // Ensure we have proper HTML structure for iframe rendering
+            
+            // Smart HTML completion for partial documents
+            if (partialDoc.includes("<head>") && !partialDoc.includes("</head>")) {
+              partialDoc += "\n</head>";
+            }
+            if (partialDoc.includes("<body") && !partialDoc.includes("</body>")) {
+              partialDoc += "\n</body>";
+            }
             if (!partialDoc.includes("</html>")) {
-              // Close any open tags properly for valid HTML
-              if (partialDoc.includes("<body") && !partialDoc.includes("</body>")) {
-                partialDoc += "\n</body>";
-              }
-              if (partialDoc.includes("<head") && !partialDoc.includes("</head>")) {
-                partialDoc += "\n</head>";
-              }
               partialDoc += "\n</html>";
             }
 
-            // Update more frequently for real-time effect (every 100ms for better real-time experience)
+            // Throttle renders to prevent flashing/flickering (DeepSite optimization)
             const now = Date.now();
-            if (now - lastRenderTime > 100) {
-              console.log("📝 AskAI - Setting HTML content for real-time preview:", partialDoc.length, "chars");
-              console.log("📝 AskAI - HTML starts with:", partialDoc.substring(0, 150) + "...");
-              console.log("📝 AskAI - Calling setHtml function...");
+            if (now - lastRenderTime > 300) {
+              console.log("📝 AskAI - Setting HTML content for optimized preview:", partialDoc.length, "chars");
               setHtml(partialDoc);
-              console.log("📝 AskAI - setHtml called successfully");
               lastRenderTime = now;
 
               // Update typing progress
-              const progress = Math.min((partialDoc.length / estimatedTotalLength) * 100, 95);
+              const progress = Math.min((partialDoc.length / 3000) * 100, 95);
               setTypingProgress(progress);
 
               // Auto-scroll to bottom of editor
@@ -305,7 +263,7 @@ ${htmlContent}
               }
             }
           }
-
+          
           read();
         };
 
@@ -316,7 +274,6 @@ ${htmlContent}
         toast.error("No response body available for streaming");
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("❌ Error in callAi:", error);
       setisAiWorking(false);

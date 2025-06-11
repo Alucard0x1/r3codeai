@@ -1,0 +1,1612 @@
+// To run this code you need to install the following dependencies:
+// npm install @google/genai mime
+// npm install -D @types/node
+
+import {
+  GoogleGenAI,
+} from '@google/genai';
+
+async function main() {
+  const ai = new GoogleGenAI({
+    apiKey: process.env.GEMINI_API_KEY,
+  });
+  const config = {
+    responseMimeType: 'text/plain',
+  };
+  const model = 'gemini-2.5-flash-preview-05-20';
+  const contents = [
+    {
+      role: 'user',
+      parts: [
+        {
+          text: `Create a sophisticated, inviting, and highly functional single-file HTML website for a premium cafe named "The Daily Grind," optimized for outstanding results and a memorable user experience.
+
+**Design & Visual Style:**
+Embrace a modern minimalist aesthetic with a warm, inviting ambiance, drawing inspiration from Scandinavian coziness and subtle industrial chic. Prioritize clean lines, ample white space, and a focus on high-quality imagery. The overall feel should be elegant, comfortable, and slightly upscale.
+
+**Color Palette:**
+Utilize a harmonious blend of:
+*   Primary: Deep Forest Green (#2E4A3A) or Charcoal Grey (#36454F)
+*   Secondary: Warm Muted Gold (#B8860B) or Copper (#B5651D) for accents
+*   Neutrals: Creamy Off-White (#F8F7F0) for backgrounds, and soft, warm grey (#A9A9A9) for subtle text/dividers.
+*   Accent: Rich Mahogany Brown (#654321) for specific highlights.
+
+**Typography:**
+*   Headings (H1-H3): An elegant, readable serif font (e.g., 'Lora', 'Playfair Display') for a touch of classic sophistication.
+*   Body Text & Navigation: A clean, highly legible sans-serif font (e.g., 'Inter', 'Open Sans') for clarity and modern appeal.
+
+**UI/UX Best Practices & Interactive Elements:**
+*   **Responsive Design:** Implement a mobile-first approach using CSS media queries to ensure seamless adaptability across all devices (mobile, tablet, desktop).
+*   **Accessibility:** Utilize semantic HTML5 elements (\`<header>\`, \`<nav>\`, \`<main>\`, \`<section>\`, \`<footer>\`, \`<article>\`), ARIA roles where necessary, focus on clear contrast ratios, and ensure full keyboard navigation support.
+*   **Performance Optimization:** Embed all CSS within a single \`<style>\` block in the \`<head>\` and all JavaScript within a single \`<script>\` block before the closing \`</body>\` tag. Optimize all embedded images (e.g., base64 encoding for small icons, SVG for vector graphics) and lazy-load larger content images using \`loading="lazy"\` attribute or a minimal JS polyfill. No external stylesheets, scripts, or font files.
+*   **Subtle Animations:** Integrate smooth CSS transitions for hovers (buttons, navigation links, menu items), subtle scroll-reveal effects for content sections, and a gentle parallax effect on the hero background image.
+*   **Micro-interactions:** Consider subtle ripple effects on button clicks or elegant underlines appearing on navigation hover.
+*   **Smooth Scrolling:** Implement smooth scrolling for internal navigation links.
+
+**Specific Layout Patterns & Component Suggestions:**
+
+1.  **Header:**
+    *   Sticky navigation bar at the top, initially transparent, becoming solid on scroll.
+    *   Elegant, minimalist text-based logo ("The Daily Grind") or a simple, refined SVG icon.
+    *   Clean, concise navigation links: "Home", "Menu", "About Us", "Gallery", "Contact".
+
+2.  **Hero Section:**
+    *   Full-width, high-resolution background image: A meticulously composed shot of exquisite latte art, a warm, inviting cafe interior, or freshly baked pastries.
+    *   Central, compelling headline: "Your Daily Escape. Crafted with Passion."
+    *   Clear Call-to-Action (CTA) button: "View Our Menu" with a subtle hover effect.
+    *   Subtle parallax scroll effect on the background image.
+
+3.  **About Us Section:**
+    *   Engaging, concise storytelling about the cafe's philosophy, origin, and commitment to quality.
+    *   Use a grid layout for text columns and small, integrated imagery (e.g., barista at work, rustic cafe decor, coffee beans).
+
+4.  **Menu Section:**
+    *   Visually appealing grid layout for menu items (e.g., 3-4 columns on desktop, 1-2 on mobile).
+    *   Categories for filtering (Coffee, Pastries, Savories) with interactive tabs/buttons.
+    *   Each menu item card should include:
+        *   High-quality, styled photo of the item.
+        *   Item Name (H4).
+        *   Brief, enticing description.
+        *   Price.
+        *   Subtle hover animation (e.g., slight lift, shadow effect).
+
+5.  **Gallery Section:**
+    *   Responsive masonry or flexible grid layout showcasing a diverse range of high-quality images: cafe interior, customer interactions, signature dishes, seasonal decor.
+    *   Implement a simple lightbox functionality (CSS/JS) for clicked images.
+
+6.  **Testimonials Section:**
+    *   Clean, elegant carousel/slider component displaying customer quotes, ideally with a small circular image of the customer (placeholder).
+    *   Smooth, auto-play transitions with manual navigation options.
+
+7.  **Call to Action / Booking Section:**
+    *   Prominent section encouraging reservations or online orders.
+    *   Clear CTA button: "Book a Table" or "Order Online".
+
+8.  **Location & Contact Section:**
+    *   Embedded static map image (linking to Google Maps) or a simple iframe.
+    *   Cafe address, phone number, and email.
+    *   Opening hours listed clearly.
+    *   Simple, elegant contact form (Name, Email, Message, Submit button) with basic client-side validation.
+
+9.  **Footer:**
+    *   Social media icons (e.g., Instagram, Facebook, Yelp) linked to cafe profiles.
+    *   Brief copyright information.
+    *   Quick navigation links (repeating main nav or additional internal links).
+
+**Image Content & Placement Suggestions (all embedded):**
+*   **Hero:** High-resolution, professional-grade shot of latte art or a warm, inviting cafe interior.
+*   **Menu Items:** Perfectly styled, consistent photos of signature coffee drinks, pastries, and savory food items.
+*   **About Us:** Small, intimate shots of baristas, coffee beans, or cozy cafe corners.
+*   **Gallery:** A curated collection of diverse, high-quality photos showcasing the cafe's ambiance, products, and customer experience.
+
+**Technical Constraints:**
+*   All HTML, CSS, and JavaScript must be contained within a single \`.html\` file.
+*   Do not use any external stylesheets (\`<link rel="stylesheet">\`), external JavaScript files (\`<script src="...">\`), or external fonts (use system fonts or embed base64 font data directly if absolutely necessary).
+*   All icons should be SVG or base64 encoded.`,
+        },
+      ],
+    },
+    {
+      role: 'model',
+      parts: [
+        {
+          text: `**Designing the Daily Grind Site**
+
+I've started sketching out the single-file HTML structure for "The Daily Grind." My focus is on creating a responsive design that's also accessible and performs well. I'm aiming for a clean, user-friendly layout with sections for menus, about us, contact, and perhaps online ordering, all within a single HTML file.
+
+
+**Analyzing Sectional Requirements**
+
+I'm deep-diving into the specific elements for each section of "The Daily Grind" site. This involves a menu that is structured to accommodate categories and item cards (including hover effects). The about section is defined to have a grid layout and some imagery. The gallery will have a responsive grid and lightbox effect.
+
+
+**Refining HTML Element Selection**
+
+I've been meticulously considering each HTML element for "The Daily Grind". I'm prioritizing semantic structure and accessibility, planning to use \`<header>\`, \`<nav>\`, \`<main>\`, \`<article>\`, \`<section>\`, \`<aside>\`, and \`<footer>\` elements strategically. This includes nested \`<div>\` elements only where essential for layout or styling. I'm aiming for clean, concise, and understandable code.
+
+
+**Structuring the Single Page**
+
+I'm now deep into the HTML structure, focusing on sectioning elements and implementing the initial color variables and font choices. I'm prioritizing semantic HTML to enhance accessibility and SEO. The goal is a visually appealing layout that loads quickly and is easy to navigate. The code is being heavily documented for maintainability and readability.
+
+
+**Laying the Structural Foundation**
+
+I'm now deep in the implementation phase for "The Daily Grind," starting with laying the structural foundation. My focus is on creating semantic HTML using the appropriate elements like \`<header>\`, \`<nav>\`, \`<main>\`, and \`<article>\`, while optimizing for performance. I've defined color variables and font stacks for quick and easy styling adjustments. The initial sections are now outlined, and I'm ready to populate them with content and interactive components.
+
+
+**Finalizing the Single Page**
+
+I've been heavily focusing on completing the single-file HTML structure for "The Daily Grind," implementing the planned sections with corresponding CSS styles. Now, I'm integrating the JavaScript features for interactivity, accessibility, and performance optimization. I'm focusing on ensuring all elements, including base64 placeholder images, are correctly embedded. The code is organized, commented, and ready for deployment.
+
+
+**Constructing the Core Structure**
+
+I'm now delving into the core HTML layout, strategically employing semantic HTML elements. My focus is crafting a fully responsive, single-file HTML structure for "The Daily Grind," ensuring it's accessible and performant.  I'm also setting up essential JavaScript interactions for smooth scrolling and header behaviors.
+
+
+**Integrating Interactivity and Polish**
+
+Now, I'm deep into the implementation of interactive elements and visual polish for "The Daily Grind."  I'm focusing on JavaScript interactions for smooth scrolling, the sticky header, mobile navigation toggle, and parallax effects,  while also working on accessibility features. I'm prioritizing performance optimization through strategic CSS animation and image handling techniques.
+
+
+**Revising for Responsiveness**
+
+I'm now revising the design for optimal responsiveness across devices. This includes adjusting media queries for precise breakpoint control and re-evaluating the current layout implementation with more attention to performance. I'm prioritizing mobile-first design, followed by tablet and desktop layouts, ensuring a fluid user experience. I'll also add placeholder images so I can show it working soon.
+
+
+**Integrating Accessibility and SEO**
+
+I'm now fully immersed in implementing accessibility features and SEO best practices. This includes optimizing the semantic structure, incorporating ARIA attributes, and carefully crafting image descriptions. I'm also adding \`rel="noopener"\` to external links for security, and integrating Google Fonts as inline base64 encoded strings to maintain the "single file" requirement. The goal is to maximize search engine visibility.
+
+
+**Constructing the Menu Section**
+
+I've been tackling the Menu section, focusing on a responsive grid for menu item cards with hover effects. The goal is a visually appealing and easily navigable menu. I'm also preparing for the category filter implementation with JavaScript.  I'm striving to ensure a smooth transition between categories.
+
+
+`,
+        },
+        {
+          text: `\`\`\`html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Daily Grind - Your Premium Cafe Experience. Crafted with Passion. Discover exquisite coffee, artisanal pastries, and savory delights in a cozy, elegant setting.">
+    <meta name="keywords" content="cafe, coffee, pastries, gourmet, specialty coffee, daily grind, premium cafe, cozy atmosphere, elegant, artisanal, breakfast, lunch, desserts, London, UK">
+    <meta name="author" content="The Daily Grind Cafe">
+    <title>The Daily Grind - Premium Cafe & Roastery</title>
+
+    <!-- Favicon - Simple SVG icon (Coffee Bean/Cup) Base64 encoded -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23654321' d='M18 6.8c0-1.8-1.5-3.3-3.3-3.3S11.4 5 11.4 6.8c0 .2 0 .4.1.6.4 1.3 1.6 2.2 3 2.2 1.4 0 2.6-.9 3-2.2.1-.2.1-.4.1-.6zM9 13.8c0-1.8-1.5-3.3-3.3-3.3S2.4 12 2.4 13.8c0 .2 0 .4.1.6.4 1.3 1.6 2.2 3 2.2 1.4 0 2.6-.9 3-2.2.1-.2.1-.4.1-.6zM20 16.8c0-1.8-1.5-3.3-3.3-3.3S13.4 15 13.4 16.8c0 .2 0 .4.1.6.4 1.3 1.6 2.2 3 2.2 1.4 0 2.6-.9 3-2.2.1-.2.1-.4.1-.6z'/%3E%3Cpath fill='%23B8860B' d='M10.8 19c-.3-.2-.5-.4-.7-.7-.3-.6-.3-1.3-.1-1.9.1-.3.2-.6.4-.9.2-.3.4-.6.7-.8.3-.2.7-.4 1-.5.4-.1.8-.2 1.2-.2h.4c.4 0 .8.1 1.2.2.3.1.7.3 1 .5.3.2.5.5.7.8.2.3.3.6.4.9.2.6.2 1.3-.1 1.9-.2.5-.5.9-.9 1.2-1.3 1.1-2.9 1.7-4.6 1.7s-3.3-.6-4.6-1.7zm1.2-5c0 0-.1-.1-.1-.1l-.4-.3c-.1-.1-.2-.1-.3-.1-.3-.2-.6-.3-.9-.3-.5-.1-1-.1-1.5 0-.4 0-.8.1-1.2.2-.4.1-.8.3-1.1.5-.3.2-.6.5-.8.8-.2.3-.3.6-.4.9-.1.3-.2.7-.2 1.1-.1.4-.1.8 0 1.2.1.4.2.8.4 1.2.1.2.2.3.4.5.3.3.6.5 1 .7.4.2.8.3 1.2.3.4 0 .8-.1 1.2-.2.4-.1.8-.3 1.1-.5.3-.2.6-.5.8-.8.2-.3.3-.6.4-.9.1-.3.2-.7.2-1.1.1-.4.1-.8 0-1.2-.1-.4-.2-.8-.4-1.2-.1-.2-.2-.3-.4-.5-.3-.3-.6-.5-1-.7-.4-.2-.8-.3-1.2-.3-.4 0-.8.1-1.2.2z'/%3E%3C/svg%3E">
+
+    <style>
+        /* CSS Variables for Color Palette */
+        :root {
+            --primary-green: #2E4A3A; /* Deep Forest Green */
+            --primary-charcoal: #36454F; /* Charcoal Grey (alternative primary) */
+            --secondary-gold: #B8860B; /* Warm Muted Gold */
+            --secondary-copper: #B5651D; /* Copper (alternative secondary) */
+            --neutral-cream: #F8F7F0; /* Creamy Off-White */
+            --neutral-soft-grey: #A9A9A9; /* Soft, warm grey */
+            --accent-mahogany: #654321; /* Rich Mahogany Brown */
+
+            /* Using primary green and secondary gold for this design */
+            --color-primary: var(--primary-green);
+            --color-secondary: var(--secondary-gold);
+            --color-background: var(--neutral-cream);
+            --color-text-dark: var(--primary-charcoal);
+            --color-text-light: var(--neutral-cream);
+            --color-divider: var(--neutral-soft-grey);
+            --color-highlight: var(--accent-mahogany);
+
+            /* Typography Variables (System Fonts) */
+            --font-serif-headings: 'Playfair Display', 'Lora', Georgia, 'Times New Roman', Times, serif;
+            --font-sans-body: 'Inter', 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+
+            /* Spacing & Sizing */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --spacing-xxl: 4rem;
+        }
+
+        /* Base Styles & Resets */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px; /* Base font size */
+        }
+
+        body {
+            font-family: var(--font-sans-body);
+            line-height: 1.6;
+            color: var(--color-text-dark);
+            background-color: var(--color-background);
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-serif-headings);
+            color: var(--color-primary);
+            line-height: 1.2;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        h1 { font-size: clamp(2.5rem, 6vw, 4rem); }
+        h2 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: var(--spacing-lg); }
+        h3 { font-size: clamp(1.75rem, 4vw, 2.25rem); }
+        h4 { font-size: clamp(1.5rem, 3vw, 1.8rem); }
+        p { margin-bottom: var(--spacing-md); }
+
+        a {
+            color: var(--color-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        a:hover {
+            color: var(--color-highlight);
+        }
+
+        /* Micro-interaction: Elegant Underline on hover for links */
+        nav a::after, .footer-nav a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px; /* Adjust as needed */
+            width: 100%;
+            height: 1px;
+            background-color: var(--color-highlight);
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease-out;
+        }
+
+        nav a:hover::after, .footer-nav a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background-color: var(--color-secondary);
+            color: var(--color-text-light);
+            border: none;
+            border-radius: 5px;
+            font-family: var(--font-sans-body);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            position: relative;
+            overflow: hidden; /* For ripple effect */
+            z-index: 1;
+        }
+
+        .btn:hover {
+            background-color: var(--color-highlight);
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Micro-interaction: Ripple effect for buttons */
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            pointer-events: none; /* Allows clicks to pass through */
+            z-index: 0;
+        }
+
+        .btn.ripple::after {
+            animation: ripple 0.6s linear forwards;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(150);
+                opacity: 0;
+            }
+        }
+
+        /* Section Layout */
+        section {
+            padding: var(--spacing-xxl) var(--spacing-md);
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative; /* For scroll reveal */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Header */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: transparent;
+            padding: var(--spacing-md) var(--spacing-lg);
+            z-index: 1000;
+            transition: background-color 0.4s ease, box-shadow 0.4s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(5px); /* Subtle frosted glass effect */
+            -webkit-backdrop-filter: blur(5px); /* Safari support */
+        }
+
+        .main-header.scrolled {
+            background-color: rgba(var(--primary-green-rgb), 0.95); /* Using rgba for the color change */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        /* Define RGB for JS color change */
+        :root {
+            --primary-green-rgb: 46, 74, 58; /* RGB for #2E4A3A */
+        }
+
+
+        .logo {
+            font-family: var(--font-serif-headings);
+            font-size: 1.8rem;
+            color: var(--color-text-light);
+            font-weight: 700;
+            white-space: nowrap; /* Keep logo on one line */
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            gap: var(--spacing-xl);
+        }
+
+        .nav-list a {
+            color: var(--color-text-light);
+            font-weight: 500;
+            font-size: 1.05rem;
+            padding: var(--spacing-xs) 0;
+        }
+
+        /* Hamburger Menu for Mobile */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 5px;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--color-text-light);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* Hamburger icon animation */
+        .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .menu-toggle.open span:nth-child(2) { opacity: 0; }
+        .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* Hero Section */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--color-text-light);
+            text-align: center;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Basic parallax */
+            position: relative;
+            overflow: hidden; /* Ensure parallax effect stays within bounds */
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Dark overlay for text readability */
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: var(--spacing-md);
+        }
+
+        .hero-content h1 {
+            color: var(--color-text-light);
+            margin-bottom: var(--spacing-lg);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Placeholder for Hero Image - REMOVE THIS BACKGROUND and REPLACE WITH YOUR OWN BASE64 IMAGE */
+        /* To add your image: Convert a high-res image (e.g., 1920x1080 JPEG, 150-250KB) to base64.
+           Use an online converter (e.g., base64-image.de).
+           Replace \`url('...')\` below with \`url('data:image/jpeg;base64,...YOUR_BASE64_STRING...')\` */
+        .hero-section {
+            background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="1920" height="1080" fill="%23A9A9A9"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="60" fill="%23654321"%3EPlaceholder Hero Image%3C/text%3E%3Ctext x="50%25" y="58%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" fill="%23F8F7F0"%3E(Replace with Base64 Image)%3C/text%3E%3C/svg%3E');
+        }
+
+
+        /* About Us Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-xl);
+            align-items: center;
+        }
+
+        .about-text p {
+            max-width: 700px;
+            margin: 0 auto var(--spacing-md) auto;
+            text-align: center;
+        }
+
+        .about-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .about-images img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Menu Section */
+        .menu-categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .menu-category-btn {
+            background-color: var(--color-background);
+            color: var(--color-primary);
+            border: 1px solid var(--color-primary);
+            padding: var(--spacing-xs) var(--spacing-md);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            font-weight: 600;
+        }
+
+        .menu-category-btn.active,
+        .menu-category-btn:hover {
+            background-color: var(--color-primary);
+            color: var(--color-text-light);
+            border-color: var(--color-primary);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-xl);
+        }
+
+        .menu-item {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .menu-item-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .menu-item-content {
+            padding: var(--spacing-md);
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .menu-item h4 {
+            margin-bottom: var(--spacing-xs);
+            color: var(--color-highlight);
+        }
+
+        .menu-item-description {
+            font-size: 0.9rem;
+            color: var(--neutral-soft-grey);
+            margin-bottom: var(--spacing-sm);
+            flex-grow: 1;
+        }
+
+        .menu-item-price {
+            font-weight: 700;
+            color: var(--color-primary);
+            font-size: 1.1rem;
+            margin-top: auto; /* Push price to bottom */
+        }
+
+        /* Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            padding: var(--spacing-md);
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-lg);
+            color: var(--neutral-cream);
+            font-size: 2.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            color: var(--color-secondary);
+        }
+
+        /* Testimonials Section */
+        .testimonials-container {
+            position: relative;
+            overflow: hidden;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .testimonials-carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            padding-bottom: var(--spacing-lg);
+        }
+
+        .testimonial-card {
+            flex: 0 0 100%; /* Each card takes full width */
+            padding: var(--spacing-xl);
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            box-sizing: border-box; /* Include padding in width calculation */
+            margin-right: 0; /* No margin between cards */
+        }
+
+        .testimonial-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto var(--spacing-md) auto;
+            border: 3px solid var(--color-secondary);
+        }
+
+        .testimonial-quote {
+            font-style: italic;
+            color: var(--color-text-dark);
+            margin-bottom: var(--spacing-md);
+            font-size: 1.1rem;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--color-highlight);
+            font-size: 1rem;
+        }
+
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--neutral-soft-grey);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .carousel-dot.active,
+        .carousel-dot:hover {
+            background-color: var(--color-secondary);
+        }
+
+        /* CTA / Booking Section */
+        .cta-section {
+            background-color: var(--color-primary);
+            color: var(--color-text-light);
+            text-align: center;
+            padding: var(--spacing-xxl) var(--spacing-md);
+            opacity: 1; /* Always visible, no scroll reveal needed for this design */
+            transform: translateY(0);
+        }
+
+        .cta-section h2 {
+            color: var(--color-text-light);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .cta-section p {
+            max-width: 700px;
+            margin: 0 auto var(--spacing-xl) auto;
+            font-size: 1.1rem;
+        }
+
+        .cta-section .btn {
+            background-color: var(--color-secondary);
+            color: var(--color-text-light);
+            padding: var(--spacing-md) var(--spacing-xxl);
+            font-size: 1.2rem;
+        }
+
+        .cta-section .btn:hover {
+            background-color: var(--color-highlight);
+        }
+
+        /* Location & Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-xl);
+            align-items: flex-start;
+        }
+
+        .contact-info h3, .contact-form h3 {
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-highlight);
+        }
+
+        .contact-info p {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .contact-info strong {
+            color: var(--color-primary);
+        }
+
+        .map-container {
+            width: 100%;
+            height: 300px; /* Fixed height for map */
+            background-color: var(--neutral-soft-grey);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: var(--spacing-md);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .map-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .contact-form form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            background-color: #fff;
+            padding: var(--spacing-xl);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 600;
+            color: var(--color-primary);
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--neutral-soft-grey);
+            border-radius: 5px;
+            font-family: var(--font-sans-body);
+            font-size: 1rem;
+            color: var(--color-text-dark);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-secondary);
+            box-shadow: 0 0 0 3px rgba(var(--secondary-gold-rgb), 0.2);
+        }
+        /* Define RGB for gold color for box-shadow */
+        :root {
+            --secondary-gold-rgb: 184, 134, 11; /* RGB for #B8860B */
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-form .btn {
+            align-self: flex-start;
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        .main-footer {
+            background-color: var(--primary-charcoal); /* Use charcoal for a strong footer */
+            color: var(--neutral-cream);
+            padding: var(--spacing-xxl) var(--spacing-md);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xl);
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .footer-nav {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--spacing-lg);
+        }
+
+        .footer-nav a {
+            color: var(--neutral-cream);
+            font-weight: 500;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+        }
+
+        .social-icons a {
+            color: var(--neutral-cream);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: var(--color-secondary);
+        }
+
+        /* SVG Icon styles for social media (base64 encoded) */
+        .icon-svg {
+            display: inline-block;
+            width: 1.5em; /* Adjust size as needed */
+            height: 1.5em;
+            vertical-align: -0.125em; /* Align with text baseline */
+            fill: currentColor; /* Use current text color */
+        }
+        /* Example SVG base64 for Instagram */
+        .icon-instagram {
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M224.1 142.7c-26.6 0-40.2 14.2-41.8 28.5-.6 2.5-.2 5.1 1.4 7.2L182.2 195c-11.8 1.9-20.9 9.3-24.9 19.3-5.3 13.5 1.5 28.4 13.5 35.8l10.2 6.1c-1.5 7.1-1.7 14.5-.4 21.7 1.5 8.1 4.2 15.6 8.3 22.3 4.2 6.8 9.5 12.3 15.7 16.5 11.2 7.7 24.2 11.6 37.9 11.6h.2c13.7 0 26.6-3.9 37.9-11.6 6.2-4.2 11.5-9.7 15.7-16.5 4.1-6.7 6.8-14.2 8.3-22.3 1.3-7.2 1.1-14.6-.4-21.7l10.2-6.1c12-7.4 18.8-22.3 13.5-35.8-4-10-13.1-17.4-24.9-19.3l2.5-16.6c1.6-2.1 2-4.7 1.4-7.2-1.6-14.3-15.2-28.5-41.8-28.5zM368 159.9c0-10.4-8.5-18.9-18.9-18.9s-18.9 8.5-18.9 18.9 8.5 18.9 18.9 18.9 18.9-8.5 18.9-18.9zm77.2 23.3c-2.4-7.3-8.8-13.7-16.1-16.1C387.6 137.6 295.4 128 224 128s-163.6 9.6-205.1 13.1c-7.3 2.4-13.7 8.8-16.1 16.1-3.6 11.1-4.7 26.2-4.8 44.5 0 26.9 0 46.1.1 63.3 0 17.3 0 36.4-.1 63.3-.1 18.3 1 33.4 4.8 44.5 2.4 7.3 8.8 13.7 16.1 16.1C60.4 374.4 152.6 384 224 384s163.6-9.6 205.1-13.1c7.3-2.4 13.7-8.8 16.1-16.1 3.6-11.1 4.7-26.2 4.8-44.5 0-26.9 0-46.1-.1-63.3 0-17.3 0-36.4.1-63.3.1-18.3-1-33.4-4.8-44.5zM224 336c-61.9 0-112-50.1-112-112s50.1-112 112-112 112 50.1 112 112-50.1 112-112 112z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+        }
+        /* Example SVG base64 for Facebook */
+        .icon-facebook {
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M504 256C504 114.6 397.4 8 256 8S8 114.6 8 256c0 130.6 95.8 238.4 220 252.1V334H154.2v-78h63.8v-59.5c0-63.6 38.8-98.3 95.7-98.3 27.2 0 54.7 4.9 54.7 4.9v60.1h-30.8c-31.2 0-40.9 19.3-40.9 39.7V256h68.4l-11 78h-57.4v174.1c124.2-13.7 220-121.5 220-252.1z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+        }
+        /* Example SVG base64 for Yelp */
+        .icon-yelp {
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 512'%3E%3Cpath d='M624 300.9c0 12-8.5 20.3-21.6 20.3-13.8 0-21.7-8.3-21.7-20.3s8-20.3 21.7-20.3c13 0 21.6 8.3 21.6 20.3zm-63.3-64.8c-13.8 0-21.7 8.3-21.7 20.3s8 20.3 21.7 20.3c13 0 21.6-8.3 21.6-20.3s-8.2-20.3-21.6-20.3zm-105.7 301.9l-119.5-239c-11.8-23.7-30.3-27.3-44.5-27.3-15.7 0-32.6 5.8-37.4 30.7l-94.6 211.7c-7.9 17.6-16 28.5-25.5 28.5s-14.7-10.9-22.6-28.5l-20-45.7c-6.8-15.3-20-21-34.9-21-14 0-27.2 5.7-34 21l-75.3 170.8c-9.6 21.8-24.8 23.3-42.5 1.5-16.9-21.1-28.2-46.7-33.8-71.6-4.5-20.4-13.6-27.2-34.9-27.2h-.1c-16.7 0-30 13.3-30 30 0 17.4 13.3 30 30 30h.1c32.7 0 60.1 27.6 65.5 52.8 11.5 54.3 49.3 103 98.7 103 26.3 0 46.5-11.2 57.5-30.6 13.1-23.1 32.8-51.5 45.3-78.3 16.5-35.8 45.4-85.7 45.4-85.7l115.5 231.2c8.2 16.4 20.5 24.3 37.6 24.3s28.7-8.1 36.8-24.5l115.5-231c8.2-16.4 20.5-24.3 37.6-24.3s28.7 8.1 36.8-24.5zM224 48c0 14.6 11.8 26.5 26.5 26.5S277 62.6 277 48s-11.8-26.5-26.5-26.5S224 33.4 224 48zM576 48c0 14.6 11.8 26.5 26.5 26.5S629 62.6 629 48s-11.8-26.5-26.5-26.5S576 33.4 576 48z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+        }
+
+        /* Utility for screen readers */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Media Queries for Responsiveness */
+        /* Tablet breakpoint */
+        @media (min-width: 768px) {
+            h1 { font-size: 3.5rem; }
+            h2 { font-size: 2.5rem; }
+
+            .main-header {
+                padding: var(--spacing-md) var(--spacing-xxl);
+            }
+
+            .nav-list {
+                gap: var(--spacing-lg);
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr 1fr;
+                text-align: left;
+            }
+            .about-text p {
+                text-align: left;
+                margin: 0;
+            }
+            .about-images {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on tablet */
+            }
+
+            .menu-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on tablet */
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr); /* 3 columns on tablet */
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr 1.2fr; /* Info on left, form on right */
+            }
+        }
+
+        /* Desktop breakpoint */
+        @media (min-width: 1024px) {
+            h1 { font-size: 4rem; }
+            h2 { font-size: 3rem; }
+            section {
+                padding: var(--spacing-xxl) var(--spacing-xl);
+            }
+            .nav-list {
+                gap: var(--spacing-xl);
+            }
+            .menu-grid {
+                grid-template-columns: repeat(3, 1fr); /* 3 columns on desktop */
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(4, 1fr); /* 4 columns on desktop */
+            }
+            .footer-content {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .footer-nav {
+                justify-content: flex-start;
+            }
+        }
+
+        /* Desktop breakpoint for larger screens */
+        @media (min-width: 1400px) {
+            .menu-grid {
+                grid-template-columns: repeat(4, 1fr); /* 4 columns on large desktop */
+            }
+        }
+
+        /* Mobile specific styles */
+        @media (max-width: 767px) {
+            .main-header {
+                padding: var(--spacing-sm) var(--spacing-md);
+            }
+
+            .nav-list {
+                position: fixed;
+                top: 0;
+                right: -250px; /* Hidden off-screen */
+                height: 100%;
+                width: 250px;
+                background-color: rgba(var(--primary-green-rgb), 0.98); /* Solid background for mobile menu */
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: var(--spacing-lg);
+                padding: var(--spacing-xl);
+                transition: right 0.3s ease-in-out;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+            }
+
+            .nav-list.open {
+                right: 0; /* Slide in */
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-images {
+                grid-template-columns: 1fr; /* Single column on mobile */
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr; /* Single column on mobile */
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr; /* Single column on mobile */
+            }
+
+            .testimonial-card {
+                padding: var(--spacing-lg);
+            }
+
+            .cta-section .btn {
+                width: 100%;
+            }
+
+            .contact-form .btn {
+                width: 100%;
+            }
+
+            .footer-nav {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <a href="#home" class="logo">The Daily Grind</a>
+        <nav role="navigation" aria-label="Main Navigation">
+            <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav-list">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-list" id="main-nav-list">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero-section is-visible" role="banner">
+            <div class="hero-content">
+                <h1>Your Daily Escape.<br>Crafted with Passion.</h1>
+                <a href="#menu" class="btn">View Our Menu</a>
+            </div>
+        </section>
+
+        <section id="about" class="about-section scroll-reveal">
+            <h2 class="text-center">Our Philosophy</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>At The Daily Grind, we believe coffee is an art, and every cup a masterpiece. Sourcing the finest beans from sustainable farms worldwide, we meticulously roast them in-house to unlock their unique character and flavor. Our baristas, true artisans of their craft, pour passion into every espresso, latte, and brew.</p>
+                    <p>Beyond coffee, we offer a curated selection of freshly baked pastries and savory bites, crafted with wholesome, locally-sourced ingredients. Our space is designed to be a sanctuary, a warm embrace where modern minimalism meets cozy comfort. It's more than a cafe; it's a community hub, a quiet corner for reflection, and a vibrant space for connection.</p>
+                </div>
+                <div class="about-images">
+                    <!-- Images are placeholders. Replace with your base64 encoded images. -->
+                    <!-- To get base64 string: use online tool or script, e.g., base64.guru for image to base64 -->
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23A9A9A9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23654321'%3EBarista at work%3C/text%3E%3C/svg%3E" alt="A barista expertly pouring latte art" loading="lazy">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23A9A9A9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23654321'%3ECoffee beans%3C/text%3E%3C/svg%3E" alt="Close-up of roasted coffee beans" loading="lazy">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23A9A9A9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23654321'%3ECozy corner%3C/text%3E%3C/svg%3E" alt="Cozy cafe interior with soft lighting" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <section id="menu" class="menu-section scroll-reveal">
+            <h2 class="text-center">Our Curated Menu</h2>
+            <div class="menu-categories">
+                <button class="menu-category-btn active" data-category="all">All</button>
+                <button class="menu-category-btn" data-category="coffee">Coffee</button>
+                <button class="menu-category-btn" data-category="pastries">Pastries</button>
+                <button class="menu-category-btn" data-category="savories">Savories</button>
+            </div>
+            <div class="menu-grid">
+                <!-- Coffee Items -->
+                <article class="menu-item" data-category="coffee">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23A9A9A9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23654321'%3ELatte%3C/text%3E%3C/svg%3E" alt="A perfectly crafted latte with foam art" class="menu-item-img" loading="lazy">
+                    <div class="menu-item-content">
+                        <h4>Signature Latte</h4>
+                        <p class="menu-item-description">Velvety steamed milk and a rich espresso shot, perfected with delicate latte art.</p>
+                        <span class="menu-item-price">$4.50</span>
+                    </div>
+                </article>
+                <article class="menu-item" data-category="coffee">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23A9A9A9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23654321'%3ECappuccino%3C/text%3E%3C/svg%3E" alt="Classic cappuccino with frothy milk" class="menu-item-img" loading="lazy">
+                    <div class="menu-item-content">
+                        <h4>Classic Cappuccino</h4>
+                        <p class="menu-item-description">Bold espresso topped with a generous layer of frothy milk and a dusting of cocoa.</p>
+                        <span class="menu-item-price">$4.25</span>
+                    </div>
+                </article>
+                <article class="menu-item" data-category="coffee">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23A9A9A9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23654321'%3EAmericano%3C/text%3E%3C/svg%3E" alt="Hot Americano coffee" class="menu-item-img" loading="lazy">
+                    <div class="menu-item-content">
+                        <h4>Rich Americano</h4>
+                        <p class="menu-item-description">Our signature espresso diluted with hot water for a smooth, full-bodied coffee.</p>
+                        <span class="menu-item-price">$3.75</span>
+                    </div>
+                </article>
+                <!-- Pastry Items -->
+                <article class="menu-item" data-category="pastries">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23A9A9A9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23654321'%3ECroissant%3C/text%3E%3C/svg%3E" alt="Flaky butter croissant" class="menu-item-img" loading="lazy">
+                    <div class="menu-item-content">
+                        <h4>Artisanal Croissant</h4>
+                        <p class="menu-item-description">Buttery, flaky layers baked to golden perfection, a delightful morning treat.</p>
+                        <span class="menu-item-price">$3.00</span>
+                    </div>
+                </article>
+                <article class="menu-item" data-category="pastries">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23A9A9A9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23654321'%3ECinnamon%3C/text%3E%3C/svg%3E" alt="Sweet cinnamon roll with glaze" class="menu-item-img" loading="lazy">
+                    <div class="menu-item-content">
+                        <h4>Warm Cinnamon Roll</h4>
+                        <p class="menu-item-description">Soft, gooey, and spiced with cinnamon, topped with a creamy vanilla glaze.</p>
+                        <span class="menu-item-price">$4.00</span>
+                    </div>
+                </article>
+                <!-- Savory Items -->
+                <article class="menu-item" data-category="savories">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23A9A9A9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23654321'%3ESandwich%3C/text%3E%3C/svg%3E" alt="Gourmet breakfast sandwich" class="menu-item-img" loading="lazy">
+                    <div class="menu-item-content">
+                        <h4>Gourmet Breakfast Sandwich</h4>
+                        <p class="menu-item-description">Toasted sourdough, organic eggs, sharp cheddar, and crispy bacon.</p>
+                        <span class="menu-item-price">$8.50</span>
+                    </div>
+                </article>
+                <article class="menu-item" data-category="savories">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23A9A9A9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23654321'%3EQuiche%3C/text%3E%3C/svg%3E" alt="Miniature vegetable quiche" class="menu-item-img" loading="lazy">
+                    <div class="menu-item-content">
+                        <h4>Spinach & Feta Quiche</h4>
+                        <p class="menu-item-description">Flaky pastry crust filled with a savory blend of spinach, feta, and eggs.</p>
+                        <span class="menu-item-price">$7.00</span>
+                    </div>
+                </article>
+                <!-- Add more menu items here following the same structure -->
+            </div>
+        </section>
+
+        <section id="gallery" class="gallery-section scroll-reveal">
+            <h2 class="text-center">Our Visual Story</h2>
+            <div class="gallery-grid">
+                <!-- Gallery Images - Replace with your base64 encoded images. -->
+                <div class="gallery-item" tabindex="0">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23F8F7F0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23A9A9A9'%3EG-1%3C/text%3E%3C/svg%3E" alt="Cafe interior with natural light" loading="lazy" data-full="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23F8F7F0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='30' fill='%23A9A9A9'%3EGALLERY IMAGE 1%3C/text%3E%3C/svg%3E">
+                </div>
+                <div class="gallery-item" tabindex="0">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23F8F7F0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23A9A9A9'%3EG-2%3C/text%3E%3C/svg%3E" alt="Close-up of a coffee cup on a wooden table" loading="lazy" data-full="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23F8F7F0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='30' fill='%23A9A9A9'%3EGALLERY IMAGE 2%3C/text%3E%3C/svg%3E">
+                </div>
+                <div class="gallery-item" tabindex="0">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23F8F7F0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23A9A9A9'%3EG-3%3C/text%3E%3C/svg%3E" alt="Freshly baked pastries on display" loading="lazy" data-full="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23F8F7F0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='30' fill='%23A9A9A9'%3EGALLERY IMAGE 3%3C/text%3E%3C/svg%3E">
+                </div>
+                <div class="gallery-item" tabindex="0">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23F8F7F0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23A9A9A9'%3EG-4%3C/text%3E%3C/svg%3E" alt="Customer enjoying coffee in the cafe" loading="lazy" data-full="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23F8F7F0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='30' fill='%23A9A9A9'%3EGALLERY IMAGE 4%3C/text%3E%3C/svg%3E">
+                </div>
+                <div class="gallery-item" tabindex="0">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23F8F7F0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23A9A9A9'%3EG-5%3C/text%3E%3C/svg%3E" alt="Close-up of a cappuccino with a beautiful design" loading="lazy" data-full="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23F8F7F0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='30' fill='%23A9A9A9'%3EGALLERY IMAGE 5%3C/text%3E%3C/svg%3E">
+                </div>
+                <div class="gallery-item" tabindex="0">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23F8F7F0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='10' fill='%23A9A9A9'%3EG-6%3C/text%3E%3C/svg%3E" alt="Assortment of artisan bread" loading="lazy" data-full="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23F8F7F0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='30' fill='%23A9A9A9'%3EGALLERY IMAGE 6%3C/text%3E%3C/svg%3E">
+                </div>
+                <!-- Add more gallery items here -->
+            </div>
+
+            <!-- Lightbox for Gallery -->
+            <div class="lightbox" id="lightbox">
+                <span class="lightbox-close" aria-label="Close image gallery">&times;</span>
+                <img class="lightbox-content" id="lightbox-img" src="" alt="Enlarged gallery image">
+            </div>
+        </section>
+
+        <section id="testimonials" class="testimonials-section scroll-reveal">
+            <h2 class="text-center">What Our Patrons Say</h2>
+            <div class="testimonials-container">
+                <div class="testimonials-carousel">
+                    <article class="testimonial-card" role="region" aria-label="Testimonial">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23A9A9A9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='20' fill='%23654321'%3EJP%3C/text%3E%3C/svg%3E" alt="Portrait of Jane P." class="testimonial-avatar" loading="lazy">
+                        <p class="testimonial-quote">"The Daily Grind is my absolute favorite cafe! The coffee is consistently perfect, and their croissants are simply divine. The ambiance is so welcoming, it's my go-to spot for relaxation or meeting friends."</p>
+                        <p class="testimonial-author">&ndash; Jane P., Regular Patron</p>
+                    </article>
+                    <article class="testimonial-card" role="region" aria-label="Testimonial">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23A9A9A9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='20' fill='%23654321'%3ERD%3C/text%3E%3C/svg%3E" alt="Portrait of Robert D." class="testimonial-avatar" loading="lazy">
+                        <p class="testimonial-quote">"I'm a self-proclaimed coffee snob, and The Daily Grind exceeds all my expectations. Their single-origin brews are exceptional, and the baristas are incredibly knowledgeable. Highly recommend their pour-overs!"</p>
+                        <p class="testimonial-author">&ndash; Robert D., Coffee Enthusiast</p>
+                    </article>
+                    <article class="testimonial-card" role="region" aria-label="Testimonial">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23A9A9A9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='20' fill='%23654321'%3ELB%3C/text%3E%3C/svg%3E" alt="Portrait of Lisa B." class="testimonial-avatar" loading="lazy">
+                        <p class="testimonial-quote">"Such a charming spot! The savory quiches are delicious, and I love the attention to detail in everything, from the decor to the friendly service. A true gem in the neighborhood."</p>
+                        <p class="testimonial-author">&ndash; Lisa B., Local Resident</p>
+                    </article>
+                </div>
+                <div class="carousel-nav" role="tablist" aria-label="Testimonial slides">
+                    <button class="carousel-dot active" role="tab" aria-selected="true" aria-controls="testimonial-slide-1" data-slide="0"><span class="sr-only">Go to slide 1</span></button>
+                    <button class="carousel-dot" role="tab" aria-selected="false" aria-controls="testimonial-slide-2" data-slide="1"><span class="sr-only">Go to slide 2</span></button>
+                    <button class="carousel-dot" role="tab" aria-selected="false" aria-controls="testimonial-slide-3" data-slide="2"><span class="sr-only">Go to slide 3</span></button>
+                </div>
+            </div>
+        </section>
+
+        <section id="cta" class="cta-section">
+            <h2>Experience The Daily Grind</h2>
+            <p>Ready to discover your new favorite coffee spot? Visit us today or pre-order your favorites online for a seamless experience!</p>
+            <a href="#contact" class="btn">Find Us / Order Online</a>
+        </section>
+
+        <section id="contact" class="contact-section scroll-reveal">
+            <h2 class="text-center">Visit Us or Get in Touch</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Location & Hours</h3>
+                    <p><strong>Address:</strong> 123 Coffee Lane, Artisan District, London, UK, W1A 1AA</p>
+                    <p><strong>Phone:</strong> <a href="tel:+442012345678">+44 (0)20 1234 5678</a></p>
+                    <p><strong>Email:</strong> <a href="mailto:info@thedailygrind.com">info@thedailygrind.com</a></p>
+                    <p><strong>Opening Hours:</strong></p>
+                    <ul>
+                        <li>Monday - Friday: 7:00 AM - 6:00 PM</li>
+                        <li>Saturday: 8:00 AM - 5:00 PM</li>
+                        <li>Sunday: 9:00 AM - 4:00 PM</li>
+                    </ul>
+                    <div class="map-container">
+                        <!-- Embedded static map image or iframe. For performance, use a static image that links to Google Maps. -->
+                        <!-- Replace with your actual map image (base64) -->
+                        <a href="https://www.google.com/maps/place/London" target="_blank" rel="noopener noreferrer" aria-label="View our location on Google Maps">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23A9A9A9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='20' fill='%23654321'%3EPlaceholder Map%3C/text%3E%3Ctext x='50%25' y='60%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='15' fill='%23F8F7F0'%3E(Click to open Google Maps)%3C/text%3E%3C/svg%3E" alt="Map showing cafe location">
+                        </a>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <h3>Send Us a Message</h3>
+                    <form id="contactForm" aria-label="Contact form">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" name="name" required aria-required="true" placeholder="Your Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required aria-required="true" placeholder="your.email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message:</label>
+                            <textarea id="message" name="message" rows="5" required aria-required="true" placeholder="How can we help you?"></textarea>
+                        </div>
+                        <button type="submit" class="btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <nav class="footer-nav-wrapper" aria-label="Footer Navigation">
+                <ul class="footer-nav">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </nav>
+            <div class="social-icons" role="contentinfo" aria-label="Social Media Links">
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Visit us on Instagram">
+                    <span class="icon-svg icon-instagram"></span>
+                </a>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Visit us on Facebook">
+                    <span class="icon-svg icon-facebook"></span>
+                </a>
+                <a href="https://yelp.com" target="_blank" rel="noopener noreferrer" aria-label="Find us on Yelp">
+                    <span class="icon-svg icon-yelp"></span>
+                </a>
+            </div>
+            <p>&copy; 2023 The Daily Grind. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Sticky Header and Scroll-to-Top ---
+            const header = document.querySelector('.main-header');
+            const navLinks = document.querySelectorAll('.nav-list a, .footer-nav a');
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navList = document.querySelector('.nav-list');
+
+            const handleScroll = () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            };
+
+            window.addEventListener('scroll', handleScroll);
+            handleScroll(); // Call on load to set initial state
+
+            // --- Mobile Navigation Toggle ---
+            menuToggle.addEventListener('click', () => {
+                navList.classList.toggle('open');
+                menuToggle.classList.toggle('open');
+                menuToggle.setAttribute('aria-expanded', navList.classList.contains('open'));
+                document.body.classList.toggle('no-scroll'); // Optional: prevent body scroll when menu is open
+            });
+
+            // Close mobile menu when a nav link is clicked
+            navList.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navList.classList.contains('open')) {
+                        navList.classList.remove('open');
+                        menuToggle.classList.remove('open');
+                        menuToggle.setAttribute('aria-expanded', 'false');
+                        document.body.classList.remove('no-scroll');
+                    }
+                });
+            });
+
+            // --- Smooth Scrolling for Navigation Links ---
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = href.substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - header.offsetHeight, // Adjust for sticky header
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // --- Scroll Reveal Animation ---
+            const scrollRevealElements = document.querySelectorAll('.scroll-reveal');
+            const observerOptions = {
+                root: null, // viewport
+                rootMargin: '0px',
+                threshold: 0.1 // 10% of element visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            }, observerOptions);
+
+            scrollRevealElements.forEach(el => observer.observe(el));
+
+            // --- Menu Category Filtering ---
+            const menuCategoryButtons = document.querySelectorAll('.menu-category-btn');
+            const menuItems = document.querySelectorAll('.menu-item');
+
+            menuCategoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    menuCategoryButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    button.classList.add('active');
+
+                    const category = button.dataset.category;
+
+                    menuItems.forEach(item => {
+                        const itemCategory = item.dataset.category;
+                        if (category === 'all' || itemCategory === category) {
+                            item.style.display = 'flex'; // Show item
+                        } else {
+                            item.style.display = 'none'; // Hide item
+                        }
+                    });
+                });
+            });
+
+            // --- Gallery Lightbox ---
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxClose = document.querySelector('.lightbox-close');
+
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const fullSrc = item.querySelector('img').dataset.full; // Get full image URL from data-full attribute
+                    const altText = item.querySelector('img').alt;
+                    lightboxImg.src = fullSrc;
+                    lightboxImg.alt = altText;
+                    lightbox.style.display = 'flex';
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling when lightbox is open
+                    lightboxImg.focus(); // Focus on image for accessibility
+                });
+                // Keyboard accessibility for gallery items
+                item.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        item.click(); // Trigger click event
+                    }
+                });
+            });
+
+            lightboxClose.addEventListener('click', () => {
+                lightbox.style.display = 'none';
+                document.body.style.overflow = ''; // Restore scrolling
+            });
+
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) { // Close if clicking outside the image
+                    lightbox.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && lightbox.style.display === 'flex') {
+                    lightbox.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+
+
+            // --- Testimonials Carousel ---
+            const carousel = document.querySelector('.testimonials-carousel');
+            const carouselDots = document.querySelectorAll('.carousel-dot');
+            const testimonialCards = document.querySelectorAll('.testimonial-card');
+            let currentIndex = 0;
+            let autoPlayInterval;
+            const slideDuration = 5000; // 5 seconds per slide
+
+            const updateCarousel = () => {
+                const cardWidth = testimonialCards[0].offsetWidth;
+                carousel.style.transform = \`translateX(-${currentIndex * cardWidth}px)\`;
+
+                carouselDots.forEach((dot, index) => {
+                    if (index === currentIndex) {
+                        dot.classList.add('active');
+                        dot.setAttribute('aria-selected', 'true');
+                    } else {
+                        dot.classList.remove('active');
+                        dot.setAttribute('aria-selected', 'false');
+                    }
+                });
+            };
+
+            const startAutoPlay = () => {
+                clearInterval(autoPlayInterval); // Clear any existing interval
+                autoPlayInterval = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % testimonialCards.length;
+                    updateCarousel();
+                }, slideDuration);
+            };
+
+            // Event listeners for dots
+            carouselDots.forEach(dot => {
+                dot.addEventListener('click', (e) => {
+                    currentIndex = parseInt(e.target.dataset.slide);
+                    updateCarousel();
+                    startAutoPlay(); // Restart autoplay on manual navigation
+                });
+            });
+
+            // Restart autoplay when window is resized (to re-calculate cardWidth)
+            window.addEventListener('resize', () => {
+                updateCarousel();
+                startAutoPlay();
+            });
+
+            // Initial setup
+            updateCarousel();
+            startAutoPlay(); // Start autoplay on load
+
+            // --- Button Ripple Effect ---
+            document.querySelectorAll('.btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const x = e.clientX - e.target.getBoundingClientRect().left;
+                    const y = e.clientY - e.target.getBoundingClientRect().top;
+
+                    const ripple = document.createElement('span');
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    this.appendChild(ripple);
+
+                    ripple.addEventListener('animationend', () => {
+                        ripple.remove();
+                    });
+                });
+            });
+
+            // --- Contact Form Client-Side Validation ---
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault(); // Prevent actual form submission
+
+                    const name = document.getElementById('name');
+                    const email = document.getElementById('email');
+                    const message = document.getElementById('message');
+
+                    let isValid = true;
+
+                    // Simple validation for required fields
+                    if (!name.value.trim()) {
+                        alert('Please enter your name.');
+                        name.focus();
+                        isValid = false;
+                    } else if (!email.value.trim() || !/\\S+@\\S+\\.\\S+/.test(email.value)) {
+                        alert('Please enter a valid email address.');
+                        email.focus();
+                        isValid = false;
+                    } else if (!message.value.trim()) {
+                        alert('Please enter your message.');
+                        message.focus();
+                        isValid = false;
+                    }
+
+                    if (isValid) {
+                        // In a real scenario, you'd send this data to a server
+                        console.log('Form Submitted:', {
+                            name: name.value,
+                            email: email.value,
+                            message: message.value
+                        });
+                        alert('Thank you for your message! We will get back to you shortly.');
+                        this.reset(); // Clear form fields
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+\`\`\``,
+        },
+      ],
+    },
+    {
+      role: 'user',
+      parts: [
+        {
+          text: `INSERT_INPUT_HERE`,
+        },
+      ],
+    },
+  ];
+
+  const response = await ai.models.generateContentStream({
+    model,
+    config,
+    contents,
+  });
+  let fileIndex = 0;
+  for await (const chunk of response) {
+    console.log(chunk.text);
+  }
+}
+
+main();

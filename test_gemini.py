@@ -4,7 +4,7 @@ import requests
 
 # Replace this with your actual Gemini API key
 API_KEY = "AIzaSyBVJ-f2maE0roBX77Ao9jGsFEgDaXNCARY"
-API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={API_KEY}"
+API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key={API_KEY}"
 
 def send_prompt(prompt):
     headers = {
